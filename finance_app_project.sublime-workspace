@@ -1,0 +1,344 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 136.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/georgiestatham/Documents/Python/finance_app",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app/budget_app",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app/main"
+	],
+	"file_history":
+	[
+		"/Users/georgiestatham/Documents/Python/Python_challenge/Level_4.py",
+		"/Users/georgiestatham/Documents/Python/Python_challenge/banner.p",
+		"/Users/georgiestatham/Documents/Python/Python_challenge/Level_5.py",
+		"/Users/georgiestatham/Documents/Python/finance_app/.gitignore",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app/budget_app/settings.py",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app/main/urls.py",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app/budget_app/urls.py",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app/main/views.py",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app/templates/home.html",
+		"/Users/georgiestatham/Documents/Python/finance_app/budget_app/main/models.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/perfect_square/perfect_square.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/perfect_square/perfect_square_solution.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/perfect_square/test_perfect_square.py",
+		"/Users/georgiestatham/Documents/Python/Python_challenge/Level_1.py",
+		"/Users/georgiestatham/Documents/Python/Python_challenge/Level_2.py",
+		"/Users/georgiestatham/Documents/Python/Python_challenge/Level_3.py",
+		"/Users/georgiestatham/Documents/Python/Python_chalenge/level_3.txt",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/index.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/base.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/payments/admin.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/main/views.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/payments/views.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/django_ecommerce/settings.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/payments/models.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/django_ecommerce/urls.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/payments/forms.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/static/jquery.js",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/static/jquery.min.js",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/static/jquery_ujs.js",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/static/application.js",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/cardform.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/edit.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/errors.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/field.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/home.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/register.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/sign_in.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/test.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/user.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/contact/forms.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/contact/admin.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/contact.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/contact/views.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/contact/models.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django_ecommerce/django_ecommerce/templates/flatpages/default.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/blog/models.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/registration/login.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/blog/post.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/_base.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/blog/index.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/accounts/urls.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/bloggy_project/urls.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/bloggy_project/settings.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/signup.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/accounts/views.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/blog/views.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/blog/registration/login.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/Book_2_Exercises/assets/django-bloggy/views.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/blog/urls.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/blog/add_post.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/blog/forms.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/.gitignore",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/Book_2_Exercises/assets/django-bloggy/_base.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/blog/_base.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/blog/admin.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/templates/index.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-bloggy/bloggy_project/blog/tests.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-quick-start/hello_world_project/hello_world/views.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/jquery-tutorial/js/main.js",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/jquery-tutorial/css/main.css",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/jquery-tutorial/index.html",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/Meetup_date/test_meetup_date.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/Point/point.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/Meetup_date/meetup_date.py",
+		"/Users/georgiestatham/Desktop/jquery-practice-master/part1.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/front-end/main.js",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/front-end/index.html",
+		"/Users/georgiestatham/Desktop/jquery-practice-master/js/main1.js",
+		"/Users/georgiestatham/Downloads/jquery-practice-master/part1.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-quick-start/hello_world_project/templates/betterhello.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-quick-start/hello_world_project/hello_world_project/settings.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-quick-start/hello_world_project/hello_world_project/urls.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-quick-start/hello_world_project/hello_world/urls.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-quick-start/hello_world_project/main.js",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/views.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/admin.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/mysite/settings.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/urls.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/mysite/urls.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/models.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/templates/polls/index.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/tests.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/static/polls/style.css",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/templates/polls/results.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/templates/polls/detail.html",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/polls/templates/polls/details.html",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/Point/test_point.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-tutorial/mysite/manage.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/django-quick-start/hello_world_project/manage.py",
+		"/Users/georgiestatham/Documents/Python/finance_app/exchange_rate.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/Circle/circle_solution.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/Circle/circle.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/stock_download.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/socrata/socrata/spiders/crawl_spider.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/socrata/socrata/settings.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/socrata/socrata/pipelines.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/socrata/socrata/items.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/socrata/socrata/spiders/myspider.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/hackernews/hackernews/spiders/basic.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/socrata/socrata.json",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/wikipedia/wikipedia/spiders/basic.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/Multimax/multimax.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/wikipedia/wikipedia/spiders/wiki.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/wikipedia/wiki.json",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/get_html.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/beautiful_soup.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/web_scraping/hackernews/hackernews/items.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/client-side/create_db.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/client-side/get_movies.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/is_anagram/is_anagram_solution.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/client-side/create_db_2.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/client-side/coming_soon.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/client-side/tweepy_practice.py",
+		"/Users/georgiestatham/Documents/Python/practice.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/is_anagram/test_anagram.py",
+		"/Users/georgiestatham/Documents/Python/Python_morsels/is_anagram/anagram.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/client-side/tweepy.py",
+		"/Users/georgiestatham/Documents/Python/Real_Python_Book_2/client-side/clientd.py"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 492.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 116.0
+	},
+	"pinned_build_system": "Packages/Python/Python.sublime-build",
+	"project": "finance_app_project.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 182.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

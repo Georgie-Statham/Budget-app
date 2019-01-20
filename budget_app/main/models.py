@@ -12,6 +12,7 @@ class Expense(models.Model):
         ('Bills', 'Utility bills'),
         ('Clothes', 'Clothes'),
         ('Household', 'Household'),
+        ('Cat', 'Cat'),
         ('Transport', 'Transport'),
         ('Travel', 'Travel'),
         ('Misc', 'Miscellaneous')
@@ -29,6 +30,7 @@ class Expense(models.Model):
         ('Georgie', 'Georgie')
     )
 
+
     date = models.DateField(default=date.today)
     description = models.CharField(max_length=100)
     category = models.CharField(
@@ -36,6 +38,7 @@ class Expense(models.Model):
             choices=CATEGORIES,
             default='Food')
     amount = models.DecimalField(max_digits=7, decimal_places=2)
+    converted_amount = models.DecimalField(max_digits=7, decimal_places=2)
     currency = models.CharField(
             max_length=3,
             choices=CURRENCIES,

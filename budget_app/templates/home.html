@@ -1,4 +1,10 @@
-<html>
-<title>Finance App</title>
-<h3>The Three Musketeer's Finance App</h3>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Monthly Overview</h2>
+<h3>Family Expenditure</h3>
+
+<p><strong>Total: £{{ family_total }}</strong></p>
+
+{% endblock %}
