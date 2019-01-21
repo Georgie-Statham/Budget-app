@@ -2,9 +2,27 @@
 
 {% block content %}
 
-<h2>Monthly Overview</h2>
+<h2><em>Monthly Overview</em></h2>
 <h3>Family Expenditure</h3>
-
+<ul>
+  {% for category, total in category_totals_dict.items %}
+    <li>{{ category }}: £{{ total }}</li>
+  {% endfor %}
+</ul>
 <p><strong>Total: £{{ family_total }}</strong></p>
+<br>
+<h4>Amount Paid</h4>
+<ul>
+  {% for person, amount in amount_paid_dict.items %}
+    <li>{{ person }}: £{{ amount }}</li>
+  {% endfor %}
+</ul>
+<br>
+<h3>Individual Expenditure</h3>
+<ul>
+  {% for person, amount in individual_expenses_dict.items %}
+    <li>{{ person }}: £{{ amount }}</li>
+  {% endfor %}
+</ul>
 
 {% endblock %}
