@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load bootstrap_tags %}
+<h3 class="greenTextOverride">{{ month }}, {{ year }}</h3>
+<table style="width:100%" class="table table-striped">
+  <tr>
+    <th>Date</th>
+    <th>Description</th>
+    <th>Category</th>
+    <th>Amount</th>
+    <th>Currency</th>
+    <th>Who for?</th>
+    <th>Who paid?</th>
+    <th>Edit/Delete</th>
+  </tr>
+  {% for expense in expenses_in_month %}
+  <tr>
+    <td>{{ expense.date }}</td>
+    <td>{{ expense.description }}</td>
+    <td>{{ expense.category }}</td>
+    <td>{{ expense.amount }}</td>
+    <td>{{ expense.currency }}</td>
+    <td>{{ expense.who_for }}</td>
+    <td>{{ expense.who_paid }}</td>
+    <td><a href="/history/previous_month/{{ expense.pk }}/update">Edit/</a>
+      <a href="/history/previous_month/{{ expense.pk }}/delete">Delete</a>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

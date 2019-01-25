@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 from decimal import *
 import requests
@@ -11,20 +12,23 @@ from .forms import ExpenseForm
 
 # helper functions
 
-def get_exchange_rate():
-    """ gets the current GBP/ILS expchange rate """
+def get_exchange_rate(date):
+    """ gets the GBP/ILS exchange rate for a specified date """
     response = requests.get(
-        'https://api.exchangeratesapi.io/latest?symbols=GBP,ILS')
+        'https://api.exchangeratesapi.io/' + str(date) + '?symbols=GBP,ILS')
     binary = response.content
     output = json.loads(str(binary, 'utf-8'))
     GBP, ILS = (output['rates']['GBP']), (output['rates']['ILS'])
     return Decimal(GBP / ILS)
 
+def this_month():
+    return timezone.now().replace(day=1, hour=0, minute=0, second=0)
+
 
 # views
 
+@login_required(login_url='/accounts/login/')
 def home(request):
-    # family_total = 0
     category_totals_dict = {}
     amount_paid_dict = {}
     individual_expenses_dict = {}
@@ -34,8 +38,7 @@ def home(request):
         family_expenses_in_category = Expense.objects.filter(
             category=category[0],
             who_for='Everyone',
-            date__gte=timezone.now().replace(
-                day=1, hour=0, minute=0, second=0)
+            date__gte=this_month()
         )
         category_total = 0
         for expense in family_expenses_in_category:
@@ -46,8 +49,7 @@ def home(request):
     for person in Expense.WHO_PAID:
         expenses_paid_for = Expense.objects.filter(
             who_for='Everyone',
-            date__gte=timezone.now().replace(
-                day=1, hour=0, minute=0, second=0),
+            date__gte=this_month(),
             who_paid=person[0]
         )
         amount_paid = 0
@@ -58,14 +60,12 @@ def home(request):
     for person in Expense.WHO_PAID:
         individual_expenses = Expense.objects.filter(
             who_for=person[0],
-            date__gte=timezone.now().replace(
-                day=1, hour=0, minute=0, second=0),
+            date__gte=this_month(),
         )
         individual_spending = 0
         for expense in individual_expenses:
             individual_spending =+ expense.converted_amount
         individual_expenses_dict[person[0]] = individual_spending
-
 
     context = {
         'category_totals_dict': category_totals_dict,
@@ -75,13 +75,15 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
+@login_required(login_url='/accounts/login/')
 def add_expense(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.save(commit=False)
             if form.cleaned_data['currency'] == 'ILS':
-                data.converted_amount = form.cleaned_data['amount'] * get_exchange_rate()
+                date = form.cleaned_data['date']
+                data.converted_amount = form.cleaned_data['amount'] * get_exchange_rate(date)
             else:
                 data.converted_amount = form.cleaned_data['amount']
             data.save()
@@ -91,6 +93,3 @@ def add_expense(request):
     else:
         form = ExpenseForm()
     return render(request, 'add_expense.html', {'form': form})
-
-def history(request):
-    return render(request, 'history.html')

@@ -2,8 +2,8 @@
 
 {% block content %}
 
-<h2><em>Monthly Overview</em></h2>
-<h3>Family Expenditure</h3>
+<h2>Monthly Overview</h2>
+<h3 class="greenTextOverride">Family Expenditure</h3>
 <ul>
   {% for category, total in category_totals_dict.items %}
     <li>{{ category }}: £{{ total }}</li>
@@ -18,7 +18,7 @@
   {% endfor %}
 </ul>
 <br>
-<h3>Individual Expenditure</h3>
+<h3 class="greenTextOverride">Individual Expenditure</h3>
 <ul>
   {% for person, amount in individual_expenses_dict.items %}
     <li>{{ person }}: £{{ amount }}</li>
