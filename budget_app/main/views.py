@@ -44,9 +44,9 @@ def home(request):
         for expense in family_expenses_in_category:
             category_total += expense.converted_amount
             family_total += expense.converted_amount
-            category_totals_dict[category[0]] = category_total
+            category_totals_dict[category[1]] = category_total
 
-    for person in Expense.WHO_PAID:
+    for person in Expense.USERS:
         expenses_paid_for = Expense.objects.filter(
             who_for='Everyone',
             date__gte=this_month(),
@@ -57,7 +57,7 @@ def home(request):
             amount_paid += expense.converted_amount
         amount_paid_dict[person[0]] = amount_paid
 
-    for person in Expense.WHO_PAID:
+    for person in Expense.USERS:
         individual_expenses = Expense.objects.filter(
             who_for=person[0],
             date__gte=this_month(),
@@ -91,5 +91,5 @@ def add_expense(request):
         else:
             print(form.errors)
     else:
-        form = ExpenseForm()
+        form = ExpenseForm(initial={'who_paid': request.user.username})
     return render(request, 'add_expense.html', {'form': form})

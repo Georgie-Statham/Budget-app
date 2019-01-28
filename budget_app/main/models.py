@@ -1,11 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
+import django.contrib.auth
 from datetime import date
 
 class Expense(models.Model):
     CATEGORIES = (
         ('Food', 'Food'),
         ('Baby', 'Baby'),
-        ('Entertainment', 'Entertainment'),
+        ('Fun_with_friends', 'Fun with friends'),
+        ('Fun_with_each_other', 'Fun with each other'),
         ('Health', 'Pharmacy/Health'),
         ('Hobbies', 'Hobbies'),
         ('Rent', 'Rent'),
@@ -18,17 +21,13 @@ class Expense(models.Model):
         ('Misc', 'Miscellaneous')
     )
     CURRENCIES = (('ILS', 'ILS'), ('GBP', 'GBP'))
-    WHO_FOR = (
-        ('Everyone', 'Everyone'),
-        ('Claire', 'Claire'),
-        ('Tristan', 'Tristan'),
-        ('Georgie', 'Georgie')
-    )
-    WHO_PAID = (
-        ('Claire', 'Claire'),
-        ('Tristan', 'Tristan'),
-        ('Georgie', 'Georgie')
-    )
+
+    USERS = [
+        (user.username, user.username)
+        for user in User.objects.all()
+    ]
+    WHO_FOR = USERS.copy()
+    WHO_FOR.append(('Everyone', 'Everyone'))
 
 
     date = models.DateField(default=date.today)
@@ -49,5 +48,6 @@ class Expense(models.Model):
             default='Everyone')
     who_paid = models.CharField(
             max_length=10,
-            choices=WHO_PAID)
+            choices=USERS,
+        )
 
