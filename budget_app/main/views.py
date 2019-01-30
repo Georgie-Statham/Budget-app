@@ -24,11 +24,19 @@ def get_exchange_rate(date):
 def this_month():
     return timezone.now().replace(day=1, hour=0, minute=0, second=0)
 
+def months_so_far():
+    month_list = []
+    for expense in Expense.objects.all():
+        month, year = expense.date.strftime("%b"), expense.date.strftime("%Y")
+        if not (month, year) in month_list:
+            month_list.append((month, year))
+    return month_list
 
 # views
 
 @login_required(login_url='/accounts/login/')
 def home(request):
+    months = months_so_far()
     category_totals_dict = {}
     amount_paid_dict = {}
     individual_expenses_dict = {}
@@ -71,7 +79,8 @@ def home(request):
         'category_totals_dict': category_totals_dict,
         'family_total': family_total,
         'amount_paid_dict': amount_paid_dict,
-        'individual_expenses_dict': individual_expenses_dict
+        'individual_expenses_dict': individual_expenses_dict,
+        'months': months,
     }
     return render(request, 'home.html', context)
 

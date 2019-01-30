@@ -2,7 +2,23 @@
 
 {% block content %}
 {% load bootstrap_tags %}
-<h3 class="greenTextOverride">{{ month }}, {{ year }}</h3>
+<div class="container">
+  <div class="row">
+    <div class="col-md-10">
+      <h3 class="greenTextOverride">{{ month }}, {{ year }}</h3>
+    </div>
+    <div class="col-md-2">
+      <div class="dropdown">
+        <button class="dropbtn">Change month</button>
+        <div class="dropdown-content">
+          {% for month, year in months %}
+          <a href="/history/detailed_month/{{ month }}_{{ year }}">{{ month }}, {{ year }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <table style="width:100%" class="table table-striped">
   <tr>
     <th>Date</th>
@@ -23,8 +39,8 @@
     <td>{{ expense.currency }}</td>
     <td>{{ expense.who_for }}</td>
     <td>{{ expense.who_paid }}</td>
-    <td><a href="/history/previous_month/{{ expense.pk }}/update">Edit/</a>
-      <a href="/history/previous_month/{{ expense.pk }}/delete">Delete</a>
+    <td><a href="{{ month }}_{{ year }}/{{ expense.pk }}/update">Edit/</a>
+      <a href="{{ month }}_{{ year }}/{{ expense.pk }}/delete">Delete</a>
   </tr>
   {% endfor %}
 </table>

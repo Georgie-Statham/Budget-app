@@ -41,12 +41,11 @@
           <a class="navbar-brand" href="">Three Musketeers Finance App</a>
         </div>
         <div class="collapse navbar-collapse">
+          {% if user.is_authenticated %}
           <ul class="nav navbar-nav">
             <li><a href="/add_expense/">Add Expense</a></li>
-            <li><a href="/history/current_month">History</a></li>
             <li><a href="/">Home</a></li>
           </ul>
-          {% if user.is_authenticated %}
           <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'logout' %}">Logout</a></li>
             <li><a>Hi {{ user.username }}</a></li>
