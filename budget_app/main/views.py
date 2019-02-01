@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from decimal import *
 import requests
@@ -26,11 +27,12 @@ def this_month():
 
 def months_so_far():
     month_list = []
-    for expense in Expense.objects.all():
+    for expense in Expense.objects.all().order_by('-date'):
         month, year = expense.date.strftime("%b"), expense.date.strftime("%Y")
         if not (month, year) in month_list:
             month_list.append((month, year))
     return month_list
+
 
 # views
 
@@ -38,9 +40,9 @@ def months_so_far():
 def home(request):
     months = months_so_far()
     category_totals_dict = {}
+    family_total = 0
     amount_paid_dict = {}
     individual_expenses_dict = {}
-    family_total = 0
 
     for category in Expense.CATEGORIES:
         family_expenses_in_category = Expense.objects.filter(
@@ -96,6 +98,8 @@ def add_expense(request):
             else:
                 data.converted_amount = form.cleaned_data['amount']
             data.save()
+            messages.add_message(
+                request, messages.SUCCESS, 'Expense successfully added.')
             return redirect(home)
         else:
             print(form.errors)

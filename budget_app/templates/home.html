@@ -2,10 +2,27 @@
 
 {% block content %}
 
-<h3>Overview of Current Month</h3>
 <div class="container">
   <div class="row">
-    <div class="col-md-4 nopadding">
+    <div class="col-md-9 nopadding">
+      <h3>Overview of Current Month</h3>
+    </div>
+    <div class="col-md-3 nopadding">
+      <br>
+      <div class="dropdown">
+        <button class="dropbtn">Month by month breakdown</button>
+        <div class="dropdown-content">
+          {% for month, year in months %}
+          <a href="/history/detailed_month/{{ month }}_{{ year }}">{{ month }}, {{ year }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 nopadding">
       <h4 class="greenTextOverride">Family Expenditure</h4>
       <table style="width:75%" class="table">
         {% for category, total in category_totals_dict.items %}
@@ -20,7 +37,7 @@
         </tr>
       </table>
     </div>
-    <div class="col-md-4 nopadding">
+    <div class="col-md-5 nopadding">
       <h4 class="greenTextOverride">Amount paid</h4>
       <table style="width:75%" class="table">
         {% for person, amount in amount_paid_dict.items %}
@@ -31,27 +48,22 @@
         {% endfor %}
       </table>
     </div>
-    <div class="col-md-4 nopadding">
-      <div class="dropdown">
-        <button class="dropbtn">Month by month breakdown</button>
-        <div class="dropdown-content">
-          {% for month, year in months %}
-          <a href="/history/detailed_month/{{ month }}_{{ year }}">{{ month }}, {{ year }}</a>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 <br>
-<h4 class="greenTextOverride">Individual Expenditure</h4>
-<table style="width:25%" class="table">
-  {% for person, amount in individual_expenses_dict.items %}
-  <tr>
-    <td>{{ person }}</td>
-    <td class="text-right">£{{ amount }}</td>
-  </tr>
-  {% endfor %}
-</table>
-
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 nopadding">
+      <h4 class="greenTextOverride">Individual Expenditure</h4>
+      <table style="width:75%" class="table">
+      {% for person, amount in individual_expenses_dict.items %}
+        <tr>
+          <td>{{ person }}</td>
+          <td class="text-right">£{{ amount }}</td>
+        </tr>
+      {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
 {% endblock %}

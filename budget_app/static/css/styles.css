@@ -8,6 +8,10 @@ ul {
   background-color: #095C0F;
 }
 
+.navbar-inverse .navbar-brand {
+  color: white;
+}
+
 .btn {
   border-radius: 10px;
   background-color: #095C0F;
@@ -64,4 +68,9 @@ ul {
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+.alert-success {
+    background-color: #ffd9b3;
+    border-color: #ffd9b3;
+}
 

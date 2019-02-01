@@ -4,10 +4,11 @@
 {% load bootstrap_tags %}
 <div class="container">
   <div class="row">
-    <div class="col-md-10">
-      <h3 class="greenTextOverride">{{ month }}, {{ year }}</h3>
+    <div class="col-md-10 nopadding">
+      <h3>{{ month }}, {{ year }}</h3>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 nopadding">
+      <br>
       <div class="dropdown">
         <button class="dropbtn">Change month</button>
         <div class="dropdown-content">
@@ -19,6 +20,38 @@
     </div>
   </div>
 </div>
+<h3 class="greenTextOverride">Overview</h3>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 nopadding">
+      <h4>Family Expenditure</h4>
+      <table style="width:85%" class="table">
+        {% for category, total in category_totals_dict.items %}
+        <tr>
+          <td>{{ category }}</td>
+          <td class="text-right">£{{ total }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td><strong>Total</strong></td>
+          <td class="text-right"><strong>£{{ family_total }}</strong></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-6 nopadding">
+      <h4>Amount paid</h4>
+      <table style="width:85%" class="table">
+        {% for person, amount in amount_paid_dict.items %}
+        <tr>
+          <td>{{ person }}</td>
+          <td class="text-right">£{{ amount }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+<h3 class="greenTextOverride">Itemised Expenses</h3>
 <table style="width:100%" class="table table-striped">
   <tr>
     <th>Date</th>
@@ -44,5 +77,30 @@
   </tr>
   {% endfor %}
 </table>
+<br>
+<h3 class="greenTextOverride">Individual Breakdown</h3>
+<div class="container">
+  <div class="row">
+    {% for user, dict in individual_breakdown.items %}
+    <div class="col-md-4 nopadding">
+      <h4>{{ user }}</h4>
+      <table style="width:85%" class="table">
+        {% for category, total in dict.items %}
+        {% if category != 'total' %}
+        <tr>
+          <td>{{ category }}</td>
+          <td class="text-right">£{{ total }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        <tr>
+          <td><strong>Total</strong></td>
+          <td class="text-right"><strong>£ {{ dict.total }}</strong></td>
+        </tr>
+      </table>
+    </div>
+    {% endfor %}
+  </div>
+</div>
 
 {% endblock %}

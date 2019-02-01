@@ -7,7 +7,7 @@
 <form action="" method="POST">
   {% csrf_token %}
   <input type="submit" name="delete" value="Yes, delete." class="btn btn-primary">
-  <a href="/">No, cancel.</a>
+  <a href="{% url 'detailed_month' month year %}">No, cancel.</a>
 </form>
 
 {% endblock %}
