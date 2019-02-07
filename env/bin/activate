@@ -74,3 +74,8 @@ fi
 if [ -n "${BASH:-}" -o -n "${ZSH_VERSION:-}" ] ; then
     hash -r
 fi
+
+export FINANCE_APP_SECRET_KEY=‘W0XKjFyDt,E[{6E-xF2Q}rZAN6Ad1a’
+export FINANCE_APP_DATABASE_NAME='expenses'
+export FINANCE_APP_DATABASE_USER='georgie'
+export FINANCE_APP_DATABASE_PASSWORD='12345678'
