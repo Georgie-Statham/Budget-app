@@ -23,8 +23,11 @@ class Expense(models.Model):
     CURRENCIES = (('ILS', 'ILS'), ('GBP', 'GBP'))
 
     USERS = [
-        (user.username, user.username)
-        for user in User.objects.all()
+        ('Claire', 'Claire'),
+        ('Tristan', 'Tristan'),
+        ('Georgie', 'Georgie'),
+        # (user.username, user.username)
+        # for user in User.objects.all()
     ]
     WHO_FOR = USERS.copy()
     WHO_FOR.append(('Everyone', 'Everyone'))
