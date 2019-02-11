@@ -4,12 +4,15 @@
 {% load bootstrap_tags %}
 <h3 class="greenTextOverride">Add an expense</h3>
 <div class="container">
-  <div class="mx-auto" style="width: 500px;">
-    <form id="expense_form" method="post" action="/add_expense/" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form | as_bootstrap }}
-    <input type="submit" name="submit" value="Submit Expense" class="btn btn-primary">
-    </form>
+  {# <div class="mx-auto" style="width: 500px;"> #}
+  <div class="row">
+    <div class="col-md-6"
+      <form id="expense_form" method="post" action="/add_expense/" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form | as_bootstrap }}
+      <input type="submit" name="submit" value="Submit Expense" class="btn btn-primary">
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

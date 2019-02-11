@@ -109,3 +109,5 @@ dmypy.json
 # Coverage
 .coverage
 "htmlcov"
+
+notes.txt
