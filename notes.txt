@@ -1,0 +1,5 @@
+config variables:
+
+DISABLE_COLLECTSTATIC = 1
+
+database details and secret key added to venv in env/bin/activate
