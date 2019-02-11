@@ -4,12 +4,14 @@
 {% load bootstrap_tags %}
 <h2>Login</h2>
 <div class="container">
-  <div class="mx-auto" style="width: 500px;">
-    <form method="post">
-    {% csrf_token %}
-    {{ form | as_bootstrap }}
-    <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+  <div class="row">
+    <div class="col-md-6"
+      <form method="post">
+      {% csrf_token %}
+      {{ form | as_bootstrap }}
+      <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

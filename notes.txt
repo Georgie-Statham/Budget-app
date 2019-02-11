@@ -3,3 +3,7 @@ config variables:
 DISABLE_COLLECTSTATIC = 1
 
 database details and secret key added to venv in env/bin/activate
+
+to deploy to heroku:
+from /finance_app:
+git subtree push --prefix budget_app heroku master
