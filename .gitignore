@@ -113,5 +113,5 @@ dmypy.json
 notes.txt
 
 # DS_Store
-*.DS_Store.orig
+.DS_Store
 
