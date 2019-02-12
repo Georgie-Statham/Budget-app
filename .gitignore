@@ -111,3 +111,7 @@ dmypy.json
 "htmlcov"
 
 notes.txt
+
+# DS_Store
+*.DS_Store.orig
+
