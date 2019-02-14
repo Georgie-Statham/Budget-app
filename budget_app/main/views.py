@@ -74,7 +74,7 @@ def home(request):
         )
         individual_spending = 0
         for expense in individual_expenses:
-            individual_spending =+ expense.converted_amount
+            individual_spending += expense.converted_amount
         individual_expenses_dict[person[0]] = individual_spending
 
     context = {
