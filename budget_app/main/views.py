@@ -14,18 +14,19 @@ from .forms import ExpenseForm
 # helper functions
 
 def get_exchange_rate(date):
-    """ gets the GBP/ILS exchange rate for a specified date """
+    """ Gets the GBP/ILS exchange rate for a specified date """
     response = requests.get(
         'https://api.exchangeratesapi.io/' + str(date) + '?symbols=GBP,ILS')
-    binary = response.content
-    output = json.loads(str(binary, 'utf-8'))
+    output = json.loads(response.content)
     GBP, ILS = (output['rates']['GBP']), (output['rates']['ILS'])
     return Decimal(GBP / ILS)
 
 def this_month():
+    """ Determines if a date is in the current month """
     return timezone.now().replace(day=1, hour=0, minute=0, second=0)
 
 def months_so_far():
+    """ Creates a list of all the months with entries in Expenses"""
     month_list = []
     for expense in Expense.objects.all().order_by('-date'):
         month, year = expense.date.strftime("%b"), expense.date.strftime("%Y")
