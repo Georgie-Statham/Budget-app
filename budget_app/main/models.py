@@ -1,7 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 import django.contrib.auth
+from django.core.exceptions import ValidationError
 from datetime import date
+
+def no_future(value):
+    today = date.today()
+    if value > today:
+        raise ValidationError("Date can't be in the future.")
 
 class Expense(models.Model):
     CATEGORIES = (
@@ -30,7 +36,7 @@ class Expense(models.Model):
     WHO_FOR.append(('Everyone', 'Everyone'))
 
 
-    date = models.DateField(default=date.today)
+    date = models.DateField(default=date.today, validators=[no_future])
     description = models.CharField(max_length=100)
     category = models.CharField(
             max_length=20,

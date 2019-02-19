@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 
-from datetime import date
+from datetime import date, timedelta
 import requests
 from unittest.mock import Mock, patch
 import json
@@ -38,6 +38,15 @@ def add_expense_data(self):
         'who_for': 'Everyone',
         'who_paid': 'Georgie'
     }
+
+def month_year(self, expense):
+    (month, year) = (
+            expense.date.strftime("%b"),
+            expense.date.strftime("%Y")
+        )
+    month_year_bytes = (month + ', ' + year).encode('utf-8')
+    return [(month, year), month_year_bytes]
+
 
 # tests for home view
 
@@ -122,14 +131,11 @@ class FamilyExpensesTest(TestCase):
     def test_month_added_to_drop_down_list(self):
         login(self)
         expense_1 = Expense.objects.get(description='Test 1')
-        (month, year) = (
-            expense_1.date.strftime("%b"),
-            expense_1.date.strftime("%Y")
-        )
-        month_year_bytes = (month + ', ' + year).encode('utf-8')
+        mon_year, mon_year_bytes =  month_year(self, expense_1)
         response = self.client.get(reverse('home'))
-        self.assertEqual([(month, year)], response.context['months'])
-        self.assertIn(month_year_bytes, response.content)
+        self.assertEqual(
+            [mon_year], response.context['months'])
+        self.assertIn(mon_year_bytes, response.content)
 
 
 # test for individual expenses
@@ -257,6 +263,41 @@ class AddExpenses(TestCase):
         self.assertTrue(mock_get_exchange_rate.called)
         self.assertEqual(
             response.converted_amount, response.amount*Decimal(0.25))
+
+    def test_expenses_from_past_month_added_to_dropdown_but_not_home_page(self):
+        login(self)
+        past_expense = Expense.objects.create(
+            date=date(2018, 12, 31),
+            description="Expense from past month",
+            category="Food",
+            amount=50,
+            converted_amount=10,
+            currency="ILS",
+            who_for="Everyone",
+            who_paid="Georgie"
+        )
+        mon_year, mon_year_bytes =  month_year(self, past_expense)
+        response = self.client.get(reverse('home'))
+        self.assertEqual(
+            [mon_year], response.context['months'])
+        self.assertIn(mon_year_bytes, response.content)
+        self.assertEqual(response.context['family_total'], 0)
+
+
+    def test_date_in_future_raises_error(self):
+        login(self)
+        form = ExpenseForm(data={
+            'date': date.today() + timedelta(days=1),
+            'description': 'Shopping',
+            'category': 'Food',
+            'amount': 50,
+            'currency': 'GBP',
+            'who_for': 'Everyone',
+            'who_paid': 'Georgie'
+        })
+        self.assertFalse(form.is_valid())
+        self.assertEquals(
+            form.errors['date'], ["Date can't be in the future."])
 
 
 
