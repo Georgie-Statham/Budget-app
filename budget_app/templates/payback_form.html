@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load bootstrap_tags %}
+<h3 class="greenTextOverride">Record a payback</h3>
+<div class="container">
+  <div class="mx-auto" style="width: 300px;">
+    <form id="payback_form" method="post" action="/payback/payback_form" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form | as_bootstrap }}
+      <input type="submit" name="submit" value="Submit Payback" class="btn btn-primary">
+    </form>
+  </div>
+</div>
+{% endblock %}
