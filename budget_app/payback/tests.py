@@ -4,8 +4,13 @@ from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 
 from datetime import date
+import requests
+import json
+from decimal import *
 
 from .forms import PaybackForm
+from .models import Payback
+from main.views import get_exchange_rate
 
 # helper functions
 
@@ -20,7 +25,7 @@ def payback_form_data(self):
         'who_to': 'Tristan',
         'amount': 50,
         'currency': 'GBP',
-        'method': 'Bank Transfer'
+        'method': 'Bank_transfer'
     }
 
 # tests
@@ -57,6 +62,7 @@ class Payback(TestCase):
 
     def test_payback_form(self):
         form = PaybackForm(data=payback_form_data(self))
+        print(form)
         self.assertTrue(form.is_valid())
 
     def test_error_message_displayed_if_form_not_valid(self):
@@ -66,7 +72,7 @@ class Payback(TestCase):
             'who_to': 'Tristan',
             'amount': 50,
             'currency': 'GBP',
-            'method': 'Bank Transfer'
+            'method': 'Bank_transfer'
         })
         self.assertFalse(form.is_valid())
         self.assertEquals(form.errors['date'], ['Enter a valid date.'])
