@@ -79,7 +79,7 @@ def detailed_month(request, month, year):
         for expense in family_expenses_in_category:
             category_total += expense.converted_amount
             family_total += expense.converted_amount
-            category_totals_dict[category[1]] = category_total
+            category_totals_dict[category[0]] = category_total
 
     for person in Expense.USERS:
         expenses_paid_for = Expense.objects.filter(
@@ -109,7 +109,7 @@ def detailed_month(request, month, year):
             for expense in user_expenses_in_category:
                 user_category_total += expense.converted_amount
                 user_total += expense.converted_amount
-                user_category_totals_dict[category[1]] = user_category_total
+                user_category_totals_dict[category[0]] = user_category_total
                 user_category_totals_dict['total'] = user_total
             individual_breakdown[user[0]]=user_category_totals_dict
 

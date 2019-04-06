@@ -11,6 +11,7 @@ from decimal import *
 from .forms import PaybackForm
 from .models import Payback
 from main.views import get_exchange_rate
+from main.models import Expense
 
 # helper functions
 
@@ -28,9 +29,21 @@ def payback_form_data(self):
         'method': 'Bank_transfer'
     }
 
+def create_payback(self):
+    return Payback.objects.create(
+        date=date.today(),
+        amount=10,
+        who_from="Claire",
+        who_to="Tristan",
+        currency="GBP",
+        amount_in_GBP=10,
+        amount_in_ILS=40,
+        method='Cash'
+    )
+
 # tests
 
-class Payback(TestCase):
+class PaybackTests(TestCase):
 
     @classmethod
     def setUp(cls):
@@ -62,7 +75,6 @@ class Payback(TestCase):
 
     def test_payback_form(self):
         form = PaybackForm(data=payback_form_data(self))
-        print(form)
         self.assertTrue(form.is_valid())
 
     def test_error_message_displayed_if_form_not_valid(self):
@@ -84,4 +96,75 @@ class Payback(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "Payback successfully recorded.")
         self.assertRedirects(response, "/payback/overview")
+
+
+class BalancesTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        """ Creates a dummy user and three expense objects """
+
+        User.objects.create_user(
+            'Claire', 'claire@email.com', '12345678'
+        )
+        User.objects.create_user(
+            'Georgie', 'georgie@email.com', '12345678'
+        )
+        User.objects.create_user(
+            'Tristan', 'tristan@email.com', '12345678'
+        )
+
+        Expense.objects.create(
+            date=date.today(),
+            description="Test balance 2",
+            category="Food",
+            amount=10,
+            converted_amount=10,
+            currency="GBP",
+            who_for="Everyone",
+            who_paid="Claire"
+        )
+        Expense.objects.create(
+            date=date.today(),
+            description="Test balance 1",
+            category="Food",
+            amount=20,
+            converted_amount=20,
+            currency="GBP",
+            who_for="Everyone",
+            who_paid="Georgie"
+        )
+        Expense.objects.create(
+            date=date.today(),
+            description="Test balance 3",
+            category="Food",
+            amount=30,
+            converted_amount=30,
+            currency="GBP",
+            who_for="Everyone",
+            who_paid="Tristan"
+        )
+
+
+    def test_balances_from_expenses(self):
+        login(self)
+        response = self.client.get(reverse('overview'))
+        balances = response.context['balances']
+        self.assertEqual(balances['Claire'][0], Decimal(-10))
+        self.assertEqual(balances['Georgie'][0], Decimal(0))
+        self.assertEqual(balances['Tristan'][0], Decimal(10))
+
+    def test_payback_creation(self):
+        payback = create_payback(self)
+        self.assertTrue(isinstance(payback, Payback))
+
+    def test_balances_with_payback(self):
+        create_payback(self)
+        login(self)
+        response = self.client.get(reverse('overview'))
+        balances = response.context['balances']
+        self.assertEqual(balances['Claire'][0], Decimal(0))
+        self.assertEqual(balances['Georgie'][0], Decimal(0))
+        self.assertEqual(balances['Tristan'][0], Decimal(0))
+
 

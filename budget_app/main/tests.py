@@ -89,7 +89,6 @@ class FamilyExpensesTest(TestCase):
             who_paid="Tristan"
         )
 
-    # Class tests: home page
 
     def test_login_required_to_access_home_page(self):
         response = self.client.get(reverse('home'))

@@ -2,9 +2,34 @@
 
 {% block content %}
 {% load bootstrap_tags %}
-<h3>Balance Overview</h1>
-<br>
-<a type="button" class="btn btn-primary" href="/payback/payback_form">Record a payback</a>
+<h3 class="greenTextOverride">Balance</h3>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 nopadding">
+      <table style="width:100%" class="table table-striped">
+        <tr>
+          <th></th>
+          <th>GBP</th>
+          <th>ILS</th>
+        </tr>
+        {% for user, amounts in balances.items %}
+        <tr>
+          <td>{{ user }}</td>
+          {% for amount in amounts %}
+           <td>{{ amount }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  <div class="col-md-1 nopadding">
+  </div>
+  <div class="col-md-3 nopadding">
+    <br>
+    <a type="button" class="btn btn-primary" href="/payback/payback_form">Record a payback</a>
+  </div>
+</div>
+</div>
 <br>
 <h3 class="greenTextOverride">Payback History</h3>
 <table style="width:100%" class="table table-striped">
