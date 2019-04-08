@@ -66,8 +66,11 @@ def overview(request):
             -individual_share + amount_paid + total_paybacks_made -
             total_paybacks_received)
 
-        user_balance_ILS = (user_balance_GBP / get_exchange_rate(date.today())).quantize(Decimal('.01'))
-        balances[user[0]] = (user_balance_GBP, user_balance_ILS)
+        user_balance_ILS = (user_balance_GBP / get_exchange_rate(date.today()))
+        balances[user[0]] = (
+            user_balance_GBP.quantize(Decimal('.01')),
+            user_balance_ILS.quantize(Decimal('.01'))
+        )
 
     context = {
         'payback_list': payback_list,

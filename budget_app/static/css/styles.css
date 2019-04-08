@@ -21,6 +21,10 @@ ul {
   color: #2E9E35;
 }
 
+.redTextOverride {
+  color: red;
+}
+
 .nopadding {
    padding: 0;
    margin: 0;

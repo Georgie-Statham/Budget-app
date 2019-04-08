@@ -16,7 +16,11 @@
         <tr>
           <td>{{ user }}</td>
           {% for amount in amounts %}
-           <td>{{ amount }}</td>
+            {% if amount < 0 %}
+              <td class="redTextOverride">{{ amount }}</td>
+            {% else %}
+              <td>{{ amount }}</td>
+            {% endif %}
           {% endfor %}
         </tr>
         {% endfor %}
