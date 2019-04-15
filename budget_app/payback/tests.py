@@ -7,6 +7,7 @@ from datetime import date
 import requests
 import json
 from decimal import *
+from unittest.mock import Mock, patch
 
 from .forms import PaybackForm
 from .models import Payback
@@ -47,9 +48,7 @@ class PaybackTests(TestCase):
 
     @classmethod
     def setUp(cls):
-        User.objects.create_user(
-            'Georgie', 'email@email.com', '12345678'
-        )
+        User.objects.create_user('Georgie', 'email@email.com', '12345678')
 
     def test_login_required_to_access_payback_page(self):
         response = self.client.get(reverse('overview'))
@@ -89,7 +88,7 @@ class PaybackTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEquals(form.errors['date'], ['Enter a valid date.'])
 
-    def test_submitting_form_generates_success_message_and_redirects_to_payment_overview(self):
+    def test_submitting_payback_form_generates_success_message_and_redirects_to_payment_overview(self):
         login(self)
         response = self.client.post("/payback/payback_form", payback_form_data(self))
         messages = list(get_messages(response.wsgi_request))
@@ -102,17 +101,11 @@ class BalancesTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        """ Creates a dummy user and three expense objects """
+        """ Creates three users and three expense objects """
 
-        User.objects.create_user(
-            'Claire', 'claire@email.com', '12345678'
-        )
-        User.objects.create_user(
-            'Georgie', 'georgie@email.com', '12345678'
-        )
-        User.objects.create_user(
-            'Tristan', 'tristan@email.com', '12345678'
-        )
+        User.objects.create_user('Claire', 'claire@email.com', '12345678')
+        User.objects.create_user('Georgie', 'georgie@email.com', '12345678')
+        User.objects.create_user('Tristan', 'tristan@email.com', '12345678')
 
         Expense.objects.create(
             date=date.today(),
@@ -145,26 +138,86 @@ class BalancesTest(TestCase):
             who_paid="Tristan"
         )
 
-
-    def test_balances_from_expenses(self):
+    @patch('payback.views.get_exchange_rate')
+    def test_balances_from_expenses(self, mock_get_exchange_rate):
+        mock_get_exchange_rate.return_value = Decimal(0.25)
         login(self)
         response = self.client.get(reverse('overview'))
         balances = response.context['balances']
-        self.assertEqual(balances['Claire'][0], Decimal(-10))
-        self.assertEqual(balances['Georgie'][0], Decimal(0))
-        self.assertEqual(balances['Tristan'][0], Decimal(10))
-
-    def test_payback_creation(self):
-        payback = create_payback(self)
-        self.assertTrue(isinstance(payback, Payback))
+        self.assertEqual(balances['Claire'], (Decimal(-10), Decimal(-40)))
+        self.assertEqual(balances['Georgie'], (Decimal(0), Decimal(0)))
+        self.assertEqual(balances['Tristan'], (Decimal(10), Decimal(40)))
 
     def test_balances_with_payback(self):
         create_payback(self)
         login(self)
         response = self.client.get(reverse('overview'))
         balances = response.context['balances']
-        self.assertEqual(balances['Claire'][0], Decimal(0))
-        self.assertEqual(balances['Georgie'][0], Decimal(0))
-        self.assertEqual(balances['Tristan'][0], Decimal(0))
+        self.assertEqual(balances['Claire'], (Decimal(0), Decimal(0)))
+        self.assertEqual(balances['Georgie'], (Decimal(0), Decimal(0)))
+        self.assertEqual(balances['Tristan'], (Decimal(0), Decimal(0)))
+
+# tests for generic update and delete views
+
+class EditViewsTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user('Georgie', 'georgie@email.com', '12345678')
+        User.objects.create_user('Claire', 'claire@email.com', '12345678')
+        User.objects.create_user('Tristan', 'tristan@email.com', '12345678')
+
+    def test_update_payback_url_exists_at_desired_location_and_uses_correct_template(self):
+        payback = create_payback(self)
+        login(self)
+        response = self.client.get(
+            reverse('payback_update', kwargs={'pk': payback.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'payback/payback_update_form.html')
+
+    def test_login_required_to_access_payback_update_form(self):
+        payback = create_payback(self)
+        response = self.client.get(
+            reverse('payback_update', kwargs={'pk': payback.pk}))
+        self.assertNotEqual(response.status_code, 200)
+        self.assertTemplateNotUsed(
+            response, 'payback/payback_update_form.html')
+
+    # def test_updating_payment_generates_success_message_and_redirects_to_overview(self):
+    #     payback = create_payback(self)
+    #     login(self)
+    #     response = self.client.post("/payback/payback_update_form", {
+    #         'date': date.today(),
+    #         'who_from': 'Georgie',
+    #         'who_to': 'Tristan',
+    #         'amount': 10,
+    #         'currency': 'GBP',
+    #         'method': 'Cash'
+    #     })
+    #     messages = list(get_messages(response.wsgi_request))
+    #     self.assertEqual(len(messages), 1)
+    #     self.assertEqual(str(messages[0]), "Payback successfully updated.")
+    #     self.assertRedirects(response, "/payback/overview")
+
+    def test_delete_payback_url_exists_at_desired_location_and_uses_correct_template(self):
+        payback = create_payback(self)
+        login(self)
+        response = self.client.get(
+            reverse('payback_delete', kwargs={'pk': payback.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'payback/payback_delete_form.html')
+
+    def test_login_required_to_delete_payback(self):
+        payback = create_payback(self)
+        response = self.client.get(
+            reverse('payback_delete', kwargs={'pk': payback.pk}))
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_deleting_payment_generates_success_message_and_redirects_to_overview(self):
+        pass
+
+
+
+
 
 

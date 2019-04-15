@@ -245,7 +245,6 @@ class AddExpenses(TestCase):
 
     @patch('main.views.get_exchange_rate')
     def test_if_currency_is_ILS_amount_is_converted_to_pounds(self, mock_get_exchange_rate):
-        mock_get_exchange_rate.return_value = Mock()
         mock_get_exchange_rate.return_value = Decimal(0.25)
         login(self)
         self.client.post("/add_expense/", {

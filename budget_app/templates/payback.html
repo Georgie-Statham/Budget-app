@@ -2,11 +2,22 @@
 
 {% block content %}
 {% load bootstrap_tags %}
-<h3 class="greenTextOverride">Balance</h3>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9 nopadding">
+      <h3 class="greenTextOverride">Balance</h3>
+    </div>
+    <div class="col-md-3 nopadding">
+      <br>
+       <a type="button" class="btn btn-primary" href="/payback/payback_form">Record a payback</a>
+    </div>
+  </div>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-md-8 nopadding">
-      <table style="width:100%" class="table table-striped">
+      <table style="width:100%" class="table">
         <tr>
           <th></th>
           <th>GBP</th>
@@ -29,8 +40,6 @@
   <div class="col-md-1 nopadding">
   </div>
   <div class="col-md-3 nopadding">
-    <br>
-    <a type="button" class="btn btn-primary" href="/payback/payback_form">Record a payback</a>
   </div>
 </div>
 </div>
