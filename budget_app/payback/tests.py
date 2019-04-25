@@ -183,21 +183,22 @@ class EditViewsTest(TestCase):
         self.assertTemplateNotUsed(
             response, 'payback/payback_update_form.html')
 
-    # def test_updating_payment_generates_success_message_and_redirects_to_overview(self):
-    #     payback = create_payback(self)
-    #     login(self)
-    #     response = self.client.post("/payback/payback_update_form", {
-    #         'date': date.today(),
-    #         'who_from': 'Georgie',
-    #         'who_to': 'Tristan',
-    #         'amount': 10,
-    #         'currency': 'GBP',
-    #         'method': 'Cash'
-    #     })
-    #     messages = list(get_messages(response.wsgi_request))
-    #     self.assertEqual(len(messages), 1)
-    #     self.assertEqual(str(messages[0]), "Payback successfully updated.")
-    #     self.assertRedirects(response, "/payback/overview")
+    def test_updating_payment_generates_success_message_and_redirects_to_overview(self):
+        payback = create_payback(self)
+        login(self)
+        response = self.client.post(
+            reverse('payback_update', kwargs={'pk': payback.pk}), {
+            'date': date.today(),
+            'who_from': 'Georgie',
+            'who_to': 'Tristan',
+            'amount': 10,
+            'currency': 'GBP',
+            'method': 'Cash'
+        })
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "Payback successfully updated.")
+        self.assertRedirects(response, reverse("overview"))
 
     def test_delete_payback_url_exists_at_desired_location_and_uses_correct_template(self):
         payback = create_payback(self)
@@ -214,7 +215,15 @@ class EditViewsTest(TestCase):
         self.assertNotEqual(response.status_code, 200)
 
     def test_deleting_payment_generates_success_message_and_redirects_to_overview(self):
-        pass
+        payback = create_payback(self)
+        login(self)
+        response = self.client.post(
+            reverse('payback_delete', kwargs={'pk': payback.pk}
+        ))
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "Payback successfully deleted.")
+        self.assertRedirects(response, reverse("overview"))
 
 
 
