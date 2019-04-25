@@ -15,8 +15,6 @@ from .models import Payback
 from main.models import Expense
 from main.views import get_exchange_rate
 
-# helper functions
-
 
 # class based editing views
 
@@ -38,13 +36,15 @@ class PaybackDelete(DeleteView):
         messages.success(self.request, self.success_message)
         return super(PaybackDelete, self).delete(request, *args, **kwargs)
 
+# Views
+
 @login_required(login_url='/accounts/login/')
 def overview(request):
     payback_list = Payback.objects.all().order_by('-date')
     family_expenses = Expense.objects.filter(who_for='Everyone')
     total_family_expenses = sum(
         expense.converted_amount for expense in family_expenses)
-    individual_share = total_family_expenses / Decimal(3) # change this to no. users
+    individual_share = total_family_expenses / Decimal(len(Expense.USERS))
     balances = {}
     for user in Expense.USERS:
         expenses_paid_for = Expense.objects.filter(
