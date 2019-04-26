@@ -42,7 +42,7 @@ class PaybackDelete(DeleteView):
         messages.success(self.request, self.success_message)
         return super(PaybackDelete, self).delete(request, *args, **kwargs)
 
-# views
+# Views
 
 @login_required(login_url='/accounts/login/')
 def overview(request):
