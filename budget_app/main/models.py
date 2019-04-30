@@ -26,7 +26,7 @@ class Expense(models.Model):
         ('Travel', 'Travel'),
         ('Misc', 'Miscellaneous')
     )
-    CURRENCIES = (('ILS', 'ILS'), ('GBP', 'GBP'))
+    CURRENCIES = (('ILS', 'ILS'), ('GBP', 'GBP'), ('AUD', 'AUD'))
 
     USERS = [
         (user.username, user.username)

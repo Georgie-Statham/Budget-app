@@ -13,7 +13,21 @@ from datetime import date
 from .forms import PaybackForm
 from .models import Payback
 from main.models import Expense
-from main.views import get_exchange_rate
+from main.views import get_exchange_rate, get_exchange_rate_2
+
+# helper functions
+
+def convert_from_GBP(value_in_GBP, currency):
+    # converts the balance calculated in GBP into a different currency
+    return value_in_GBP / get_exchange_rate_2(date.today(), currency)
+
+def currency_converter(currency_1, currency_2, date):
+    response = requests.get(
+        'https://api.exchangeratesapi.io/' + str(date) +
+        '?symbols=' + currency_1 + ',' + currency_2)
+    output = json.loads(response.content)
+    print (output)
+    return Decimal(output['rates'][currency_1] / output['rates'][currency_2])
 
 
 # class based editing views
@@ -67,13 +81,13 @@ def overview(request):
         )
         paybacks_made = Payback.objects.filter(who_from=user[0])
         total_paybacks_made = sum(
-            item.amount_in_GBP
+            item.GBP
             for item
             in paybacks_made
         )
         paybacks_received = Payback.objects.filter(who_to=user[0])
         total_paybacks_received = sum(
-            item.amount_in_GBP
+            item.GBP
             for item
             in paybacks_received
         )
@@ -83,10 +97,14 @@ def overview(request):
             + total_paybacks_made
             - total_paybacks_received
         )
-        user_balance_ILS = user_balance_GBP / get_exchange_rate(date.today())
+        user_balance_ILS = user_balance_GBP * currency_converter(
+            'GBP', 'ILS', date.today())
+        user_balance_AUD = user_balance_GBP * currency_converter(
+            'GBP', 'AUD', date.today())
         balances[user[0]] = (
             user_balance_GBP.quantize(Decimal('.01')),
-            user_balance_ILS.quantize(Decimal('.01'))
+            user_balance_ILS.quantize(Decimal('.01')),
+            user_balance_AUD.quantize(Decimal('.01')),
         )
     context = {
         'payback_list': payback_list,
@@ -101,12 +119,28 @@ def payback_form(request):
         if form.is_valid():
             data = form.save(commit=False)
             date = form.cleaned_data['date']
+            amount = form.cleaned_data['amount']
+            # for curr, x in Payback.CURRENCIES:
+            #     if form.cleaned_data['currency'] == curr:
+            #         data.curr = amount
+            #         print(data.curr)
+            #     else:
+            #         data.curr = (
+            #             amount * get_exchange_rate_2(date, curr)
+            #         )
+            #         print(data.curr)
             if form.cleaned_data['currency'] == 'ILS':
-                data.amount_in_ILS = form.cleaned_data['amount']
-                data.amount_in_GBP = form.cleaned_data['amount'] * get_exchange_rate(date)   # converts ILS to GBP
-            else:
-                data.amount_in_GBP = form.cleaned_data['amount']
-                data.amount_in_ILS = form.cleaned_data['amount'] / get_exchange_rate(date)   # converts GBP to ILS
+                data.ILS = amount
+                data.GBP = amount * currency_converter('ILS', 'GBP', date)
+                data.AUD = amount * currency_converter('ILS', 'AUD', date)
+            if form.cleaned_data['currency'] == 'GBP':
+                data.GBP = amount
+                data.ILS = amount * currency_converter('GBP', 'ILS', date)
+                data.AUD = amount * currency_converter('GBP', 'AUD', date)
+            if form.cleaned_data['currency'] == 'AUD':
+                data.AUD = amount
+                data.GBP = amount * currency_converter('AUD', 'GBP', date)
+                data.ILS = amount * currency_converter('AUD', 'ILS', date)
             data.save()
             messages.add_message(
                 request, messages.SUCCESS, 'Payback successfully recorded.')

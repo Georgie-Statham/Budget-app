@@ -14,12 +14,22 @@ from .forms import ExpenseForm
 # helper functions
 
 def get_exchange_rate(date):
-    """ Gets the GBP/ILS exchange rate for a specified date """
+    """ Gets the GBP/ILS and GBP/AUD exchange rate for a specified date """
     response = requests.get(
-        'https://api.exchangeratesapi.io/' + str(date) + '?symbols=GBP,ILS')
+        'https://api.exchangeratesapi.io/' + str(date) +
+        '?symbols=GBP,ILS')
     output = json.loads(response.content)
     GBP, ILS = (output['rates']['GBP']), (output['rates']['ILS'])
     return Decimal(GBP / ILS)
+
+def get_exchange_rate_2(date, currency):
+    """ Gets the GBP/ILS and GBP/AUD exchange rate for a specified date """
+    response = requests.get(
+        'https://api.exchangeratesapi.io/' + str(date) +
+        '?symbols=GBP,' + currency)
+    output = json.loads(response.content)
+    GBP, some_currency = (output['rates']['GBP']), (output['rates'][currency])
+    return (Decimal(GBP / some_currency))
 
 def this_month():
     """ Determines if a date is in the current month """
@@ -93,9 +103,10 @@ def add_expense(request):
         form = ExpenseForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.save(commit=False)
-            if form.cleaned_data['currency'] == 'ILS':
+            if form.cleaned_data['currency'] != 'GBP':
                 date = form.cleaned_data['date']
-                data.converted_amount = form.cleaned_data['amount'] * get_exchange_rate(date)
+                currency = form.cleaned_data['currency']
+                data.converted_amount = form.cleaned_data['amount'] * get_exchange_rate_2(date, currency)
             else:
                 data.converted_amount = form.cleaned_data['amount']
             data.save()

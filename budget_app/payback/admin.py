@@ -4,8 +4,8 @@ from .models import Payback
 
 class PaybackAdmin(admin.ModelAdmin):
     list_display = (
-        'date', 'who_from', 'who_to', 'amount', 'currency', 'amount_in_GBP',
-        'amount_in_ILS', 'method'
+        'date', 'who_from', 'who_to', 'amount', 'currency', 'GBP',
+        'ILS', 'AUD', 'method'
     )
 
 admin.site.register(Payback, PaybackAdmin)
