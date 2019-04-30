@@ -11,7 +11,7 @@ from decimal import *
 
 from .models import Expense
 from .forms import ExpenseForm
-from .views import get_exchange_rate_2
+from .views import currency_converter
 
     # Helper functions
 
@@ -232,21 +232,22 @@ class AddExpenses(TestCase):
         self.assertEqual(response.converted_amount, response.amount)
 
     @patch('main.views.requests.get')
-    def test_get_exchange_rate_2(self, mock_get):
+    def test_currency_converter(self, mock_get):
         date = 2019-2-15
-        currency = "ILS"
+        currency_1 = "GBP"
+        currency_2 = "ILS"
         rate_data = {
             "base":"EUR",
             "date":"2019-02-15",
             "rates":{"GBP":1.0,"ILS":4.0,"AUD":2.0}
         }
         mock_get.return_value = Mock(content=json.dumps(rate_data))
-        response = get_exchange_rate_2(date, currency)
+        response = currency_converter(currency_1, currency_2, date)
         self.assertEqual(response, 0.25)
 
-    @patch('main.views.get_exchange_rate_2')
-    def test_if_currency_is_ILS_amount_is_converted_to_GBP(self, mock_get_exchange_rate_2):
-        mock_get_exchange_rate_2.return_value = Decimal(0.25)
+    @patch('main.views.currency_converter')
+    def test_if_currency_is_ILS_amount_is_converted_to_GBP(self, mock_currency_converter):
+        mock_currency_converter.return_value = Decimal(0.25)
         login(self)
         self.client.post("/add_expense/", {
                 'date': date.today(),
@@ -259,7 +260,7 @@ class AddExpenses(TestCase):
             }
         )
         response = Expense.objects.get(description='Shopping')
-        self.assertTrue(mock_get_exchange_rate_2.called)
+        self.assertTrue(mock_currency_converter.called)
         self.assertEqual(
             response.converted_amount, response.amount*Decimal(0.25))
 

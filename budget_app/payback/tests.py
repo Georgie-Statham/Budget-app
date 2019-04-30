@@ -8,10 +8,11 @@ import requests
 import json
 from decimal import *
 from unittest.mock import Mock, patch
+from itertools import cycle
 
 from .forms import PaybackForm
 from .models import Payback
-from main.views import get_exchange_rate
+from main.views import currency_converter
 from main.models import Expense
 
 # helper functions
@@ -37,8 +38,9 @@ def create_payback(self):
         who_from="Claire",
         who_to="Tristan",
         currency="GBP",
-        amount_in_GBP=10,
-        amount_in_ILS=40,
+        GBP=10,
+        ILS=40,
+        AUD=20,
         method='Cash'
     )
 
@@ -138,24 +140,38 @@ class BalancesTest(TestCase):
             who_paid="Tristan"
         )
 
-    @patch('payback.views.get_exchange_rate')
-    def test_balances_from_expenses(self, mock_get_exchange_rate):
-        mock_get_exchange_rate.return_value = Decimal(0.25)
+    @patch('payback.views.currency_converter')
+    def test_balances_from_expenses(self, mock_currency_converter):
+        mock_currency_converter.side_effect = cycle((
+            Decimal(4.0),
+            Decimal(2.0),
+        ))
         login(self)
         response = self.client.get(reverse('overview'))
         balances = response.context['balances']
-        self.assertEqual(balances['Claire'], (Decimal(-10), Decimal(-40)))
-        self.assertEqual(balances['Georgie'], (Decimal(0), Decimal(0)))
-        self.assertEqual(balances['Tristan'], (Decimal(10), Decimal(40)))
+        self.assertEqual(
+            balances['Claire'], (Decimal(-10), Decimal(-40), Decimal(-20)))
+        self.assertEqual(
+            balances['Georgie'], (Decimal(0), Decimal(0), Decimal(0)))
+        self.assertEqual(
+            balances['Tristan'], (Decimal(10), Decimal(40), Decimal(20)))
 
-    def test_balances_with_payback(self):
+    @patch('payback.views.currency_converter')
+    def test_balances_with_payback(self, mock_currency_converter):
+        mock_currency_converter.side_effect = cycle((
+            Decimal(4.0),
+            Decimal(2.0),
+        ))
         create_payback(self)
         login(self)
         response = self.client.get(reverse('overview'))
         balances = response.context['balances']
-        self.assertEqual(balances['Claire'], (Decimal(0), Decimal(0)))
-        self.assertEqual(balances['Georgie'], (Decimal(0), Decimal(0)))
-        self.assertEqual(balances['Tristan'], (Decimal(0), Decimal(0)))
+        self.assertEqual(
+            balances['Claire'], (Decimal(0), Decimal(0), Decimal(0)))
+        self.assertEqual(
+            balances['Georgie'], (Decimal(0), Decimal(0), Decimal(0)))
+        self.assertEqual(
+            balances['Tristan'], (Decimal(0), Decimal(0), Decimal(0)))
 
 # tests for generic update and delete views
 
