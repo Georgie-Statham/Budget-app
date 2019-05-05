@@ -15,38 +15,10 @@ from .models import Payback
 from main.models import Expense
 from main.views import currency_converter
 
+# helper functions
 
-# class based editing views
-
-class PaybackUpdate(SuccessMessageMixin, UpdateView):
-    model = Payback
-    fields = [
-        'date',
-        'who_from',
-        'who_to',
-        'amount',
-        'currency',
-        'method'
-    ]
-    template_name_suffix = '_update_form'
-    success_message = 'Payback successfully updated.'
-    success_url = reverse_lazy('overview')
-
-class PaybackDelete(DeleteView):
-    model = Payback
-    template_name_suffix = '_delete_form'
-    success_message = 'Payback successfully deleted.'
-    success_url = reverse_lazy('overview')
-
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, self.success_message)
-        return super(PaybackDelete, self).delete(request, *args, **kwargs)
-
-# Views
-
-@login_required(login_url='/accounts/login/')
-def overview(request):
-    payback_list = Payback.objects.all().order_by('-date')
+def calculate_balances():
+    """ Calculates the amount owed by each user in GBP, ILS, and AUD """
     family_expenses = Expense.objects.filter(who_for='Everyone')
     total_family_expenses = sum(
         expense.converted_amount
@@ -90,8 +62,42 @@ def overview(request):
         balances[user[0]] = (
             user_balance_GBP.quantize(Decimal('.01')),
             user_balance_ILS.quantize(Decimal('.01')),
-            user_balance_AUD.quantize(Decimal('.01')),
+            user_balance_AUD.quantize(Decimal('.01'))
         )
+    return balances
+
+# class based editing views
+
+class PaybackUpdate(SuccessMessageMixin, UpdateView):
+    model = Payback
+    fields = [
+        'date',
+        'who_from',
+        'who_to',
+        'amount',
+        'currency',
+        'method'
+    ]
+    template_name_suffix = '_update_form'
+    success_message = 'Payback successfully updated.'
+    success_url = reverse_lazy('overview')
+
+class PaybackDelete(DeleteView):
+    model = Payback
+    template_name_suffix = '_delete_form'
+    success_message = 'Payback successfully deleted.'
+    success_url = reverse_lazy('overview')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(PaybackDelete, self).delete(request, *args, **kwargs)
+
+# Views
+
+@login_required(login_url='/accounts/login/')
+def overview(request):
+    payback_list = Payback.objects.all().order_by('-date')
+    balances = calculate_balances()
     context = {
         'payback_list': payback_list,
         'balances': balances
@@ -126,4 +132,8 @@ def payback_form(request):
             print(form.errors)
     else:
         form = PaybackForm(initial={'who_from': request.user.username})
-    return render(request, 'payback_form.html', {'form': form})
+    context = {
+       'form': form,
+       'balances': calculate_balances()
+    }
+    return render(request, 'payback_form.html', context)

@@ -28,7 +28,7 @@
         <tr>
           <td>{{ user }}</td>
           {% for amount in amounts %}
-            {% if amount < 0 %}
+            {% if amount < -0.05 %}
               <td class="redTextOverride">{{ amount }}</td>
             {% else %}
               <td>{{ amount }}</td>

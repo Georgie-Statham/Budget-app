@@ -2,7 +2,39 @@
 
 {% block content %}
 {% load bootstrap_tags %}
-<h3 class="greenTextOverride">Record a payback</h3>
+<h3 class="greenTextOverride">Balance</h3>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 nopadding">
+      <table style="width:100%" class="table">
+        <tr>
+          <th></th>
+          <th>GBP</th>
+          <th>ILS</th>
+          <th>AUD</th>
+        </tr>
+        {% for user, amounts in balances.items %}
+        <tr>
+          <td>{{ user }}</td>
+          {% for amount in amounts %}
+            {% if amount < -0.05 %}
+              <td class="redTextOverride">{{ amount }}</td>
+            {% else %}
+              <td>{{ amount }}</td>
+            {% endif %}
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  <div class="col-md-1 nopadding">
+  </div>
+  <div class="col-md-3 nopadding">
+  </div>
+</div>
+</div>
+<br>
+<h3 class="greenTextOverride">Record a Payback</h3>
 <div class="container">
   <div class="mx-auto" style="width: 300px;">
     <form id="payback_form" method="post" action="/payback/payback_form" enctype="multipart/form-data">
