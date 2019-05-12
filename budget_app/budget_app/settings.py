@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'main',
     'history',
-    'payback'
+    'payback',
+    'recurring_expenses'
 ]
 
 MIDDLEWARE = [

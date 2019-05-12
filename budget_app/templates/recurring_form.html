@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load bootstrap_tags %}
+<h3 class="greenTextOverride">Add a recurring expense</h3>
+<div class="container">
+  <div class="mx-auto" style="width: 300px;">
+    <form id="recurring_form" method="post" action="/recurring/recurring_form" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form | as_bootstrap }}
+      <input type="submit" name="submit" value="Submit Recurring Expense" class="btn btn-primary">
+    </form>
+  </div>
+</div>
+{% endblock %}

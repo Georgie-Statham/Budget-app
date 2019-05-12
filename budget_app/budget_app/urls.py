@@ -24,5 +24,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('main.urls')),
     path('history/', include('history.urls')),
-    path('payback/', include('payback.urls'))
+    path('payback/', include('payback.urls')),
+    path('recurring/', include('recurring_expenses.urls')),
 ]
