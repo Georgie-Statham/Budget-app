@@ -39,7 +39,7 @@ class Recurring(models.Model):
     start_date = models.DateField(default=date.today)
     next_date = models.DateField()
     how_often = models.CharField(
-            max_length=10,
+            max_length=11,
             choices=TIME_PERIODS,
         )
     description = models.CharField(max_length=100)
