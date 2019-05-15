@@ -2,6 +2,44 @@
 
 {% block content %}
 
-List scheduled expenses here
+<div class="container">
+  <div class="row">
+    <div class="col-md-9 nopadding">
+    </div>
+    <div class="col-md-3 nopadding">
+      <br>
+      <a type="button" class="btn btn-primary" href="/recurring/recurring_form">Add a recurring expense</a>
+    </div>
+  </div>
+</div>
+<h3 class="greenTextOverride">Scheduled Expenses</h3>
+<table style="width:100%" class="table table-striped">
+  <tr>
+    <th>Start Date</th>
+    <th>How often?</th>
+    <th>Next date</th>
+    <th>Description</th>
+    <th>Category</th>
+    <th>Amount</th>
+    <th>Currency</th>
+    <th>Who for?</th>
+    <th>Who paid?</th>
+    <th>Delete</th>
+  </tr>
+  {% for expense in scheduled_expenses %}
+  <tr>
+    <td>{{ expense.start_date }}</td>
+    <td>{{ expense.how_often }}</td>
+    <td>{{ expense.next_date }}</td>
+    <td>{{ expense.description }}</td>
+    <td>{{ expense.category }}</td>
+    <td>{{ expense.amount }}</td>
+    <td>{{ expense.currency }}</td>
+    <td>{{ expense.who_for }}</td>
+    <td>{{ expense.who_paid }}</td>
+    <!--<td><a href="/payback/{{ payback.pk }}/delete">Delete</a></td>-->
+  </tr>
+  {% endfor %}
+</table>
 
 {% endblock %}

@@ -48,7 +48,6 @@ class Recurring(models.Model):
             choices=CATEGORIES,
             default='Food')
     amount = models.DecimalField(max_digits=7, decimal_places=2)
-    converted_amount = models.DecimalField(max_digits=7, decimal_places=2)
     currency = models.CharField(
             max_length=3,
             choices=CURRENCIES,
