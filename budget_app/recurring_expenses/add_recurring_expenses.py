@@ -9,31 +9,43 @@ from .models import Recurring
 from main.models import Expense
 
 
+def reschedule(expense, relativedelta):
+    expense.next_date = expense.next_date + relativedelta
+    expense.save()
+
 def add_recurring_expense(expense):
     """ Adds a single scheduled expense and schedules next date to add"""
-    calc_conv_amount = currency_converter(
+    if expense.currency == 'GBP':
+        converted_amount = expense.amount
+    else:
+        converted_amount = expense.amount * currency_converter(
             'GBP', expense.currency, expense.next_date)
     Expense.objects.create(
         date=expense.next_date,
         description=expense.description,
         category=expense.category,
         amount=expense.amount,
-        converted_amount=calc_conv_amount,
+        converted_amount=converted_amount,
         currency=expense.currency,
         who_for=expense.who_for,
         who_paid=expense.who_paid
     )
     if expense.how_often == 'Weekly':
-        expense.next_date = expense.next_date + relativedelta(weeks=1)
+        reschedule(expense, relativedelta(weeks=1))
+        # expense.next_date = expense.next_date + relativedelta(weeks=1)
+        # expense.save()
     if expense.how_often == 'Fortnightly':
-        expense.next_date = expense.next_date + relativedelta(weeks=2)
+        reschedule(expense, relativedelta(weeks=2))
+        # expense.next_date = expense.next_date + relativedelta(weeks=2)
+        # expense.save()
     if expense.how_often == 'Monthly':
-        expense.next_date = expense.next_date + relativedelta(months=1)
-    expense.save()
+        reschedule(expense, relativedelta(months=1))
+        # expense.next_date = expense.next_date + relativedelta(months=1)
+        # expense.save()
 
 def add_scheduled_expenses():
     """ Adds all scheduled expenses from current date or earlier """
-    for expense in Recurring.objects.filter(next_date__lte=date.today()):
-        add_recurring_expense(expense)
+    for item in Recurring.objects.filter(next_date__lte=date.today()):
+        add_recurring_expense(item)
 
 

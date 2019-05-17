@@ -7,7 +7,7 @@ from .models import Recurring
 
 @login_required(login_url='/accounts/login/')
 def scheduled(request):
-    scheduled_expenses = Recurring.objects.all()
+    scheduled_expenses = Recurring.objects.all().order_by('next_date')
     return render(
         request,
         'scheduled.html',
@@ -24,7 +24,7 @@ def recurring_form(request):
             data.save()
             messages.add_message(
                 request, messages.SUCCESS, 'Recurring expense successfully added.')
-            return redirect('/')
+            return redirect(scheduled)
         else:
             print(form.errors)
     else:
