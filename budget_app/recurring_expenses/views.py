@@ -1,9 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.generic.edit import UpdateView, DeleteView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 
 from .forms import RecurringForm
 from .models import Recurring
+
+# class based editing views
+
+class RecurringDelete(DeleteView):
+    model = Recurring
+    template_name_suffix = '_delete_form'
+    success_message = 'Recurring expense successfully deleted.'
+    success_url = reverse_lazy('scheduled')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(RecurringDelete, self).delete(request, *args, **kwargs)
+
+# views
 
 @login_required(login_url='/accounts/login/')
 def scheduled(request):

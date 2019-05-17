@@ -37,7 +37,7 @@
     <td>{{ expense.currency }}</td>
     <td>{{ expense.who_for }}</td>
     <td>{{ expense.who_paid }}</td>
-    <!--<td><a href="/payback/{{ payback.pk }}/delete">Delete</a></td>-->
+    <td><a href="/recurring/{{ expense.pk }}/delete">Delete</a></td>
   </tr>
   {% endfor %}
 </table>

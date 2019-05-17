@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3 class="greenTextOverride">Delete recurring expense</h3>
+<p>Are you sure you want to delete the recurring expense: {{ recurring.description }}, {{ recurring.amount }} {{ recurring.currency }} {{ recurring.how_often }}?</p>
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" name="delete" value="Yes, delete." class="btn btn-primary">
+  <a href="/recurring/scheduled">No, cancel.</a>
+</form>
+
+{% endblock %}
