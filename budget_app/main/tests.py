@@ -50,7 +50,7 @@ def month_year(self, expense):
     return [(month, year), month_year_bytes]
 
 
-# tests for home view
+# Tests for home view
 
 class FamilyExpensesTest(TestCase):
 
@@ -139,7 +139,7 @@ class FamilyExpensesTest(TestCase):
         self.assertIn(mon_year_bytes, response.content)
 
 
-# test for individual expenses
+# Test for individual expenses
 
 class IndividualExpenses(TestCase):
 
@@ -180,7 +180,7 @@ class IndividualExpenses(TestCase):
             expense_4.converted_amount + expense_5.converted_amount
         )
 
-# tests for add_expenses view
+# Tests for add_expenses view
 
 class AddExpenses(TestCase):
 
@@ -285,7 +285,6 @@ class AddExpenses(TestCase):
         self.assertIn(mon_year_bytes, response.content)
         self.assertEqual(response.context['family_total'], 0)
 
-
     def test_date_in_future_raises_error(self):
         login(self)
         form = ExpenseForm(data={
@@ -300,8 +299,3 @@ class AddExpenses(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEquals(
             form.errors['date'], ["Date can't be in the future."])
-
-
-
-
-
