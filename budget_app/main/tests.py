@@ -29,6 +29,7 @@ def dummy_family_expenses(self):
     return [expense.converted_amount for expense in expenses]
 
 def add_expense_data(self):
+    """ Returns dummy data for ExpenseForm """
     return {
         'date': date.today(),
         'description': 'Shopping',
@@ -40,6 +41,7 @@ def add_expense_data(self):
     }
 
 def month_year(self, expense):
+    """ Returns month and year of expense in string and bytes formats """
     (month, year) = (
             expense.date.strftime("%b"),
             expense.date.strftime("%Y")

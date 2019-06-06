@@ -15,7 +15,7 @@ from .models import Payback
 from main.views import currency_converter
 from main.models import Expense
 
-# helper functions
+# Helper functions
 
 def login(self):
     """ Logs in user created in setUp """
@@ -44,7 +44,7 @@ def create_payback(self):
         method='Cash'
     )
 
-# tests
+# Tests
 
 class PaybackTests(TestCase):
 
@@ -173,7 +173,7 @@ class BalancesTest(TestCase):
         self.assertEqual(
             balances['Tristan'], (Decimal(0), Decimal(0), Decimal(0)))
 
-# tests for generic update and delete views
+# Tests for generic update and delete views
 
 class EditViewsTest(TestCase):
 
@@ -229,6 +229,8 @@ class EditViewsTest(TestCase):
         response = self.client.get(
             reverse('payback_delete', kwargs={'pk': payback.pk}))
         self.assertNotEqual(response.status_code, 200)
+        self.assertTemplateNotUsed(
+            response, 'payback/payback_delete_form.html')
 
     def test_deleting_payment_generates_success_message_and_redirects_to_overview(self):
         payback = create_payback(self)
