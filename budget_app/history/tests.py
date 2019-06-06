@@ -15,11 +15,12 @@ def login(self):
 
 def overview_response(self):
     """ Gets detailed_month url for Jan 2019 """
-    response = self.client.get(reverse_lazy(
+    return self.client.get(reverse_lazy(
             'detailed_month',
             kwargs={'month': 'Jan', 'year': '2019'}
-        ))
-    return response
+        )
+    )
+
 
 def edit_view_response(self, url_name):
     """ Gets expense update or delete url """
