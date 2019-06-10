@@ -222,7 +222,7 @@ class EditViewsTest(TestCase):
         self.assertNotEqual(response.status_code, 200)
         self.assertTemplateNotUsed(response,'main/expense_delete_form.html')
 
-    def test_deleting_payment_generates_success_message_and_redirects_to_overview(self):
+    def test_deleting_expense_generates_success_message_and_redirects_to_overview(self):
         expense = Expense.objects.get(description='Test 1')
         login(self)
         response = self.client.post(

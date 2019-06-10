@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.contrib.messages import get_messages
 
 from datetime import date, timedelta
-import requests
 from unittest.mock import Mock, patch
 import json
 from decimal import *
@@ -220,16 +219,16 @@ class AddExpenses(TestCase):
 
     def test_submitting_form_generates_success_message_and_redirect_to_home(self):
         login(self)
-        response = self.client.post("/add_expense/", add_expense_data(self))
+        response = self.client.post(
+            reverse('add_expense'), add_expense_data(self))
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "Expense successfully added.")
-        self.assertRedirects(response, "/")
+        self.assertRedirects(response, reverse("home"))
 
     def test_if_currency_is_GBP_converted_amount_equal_to_amount(self):
         login(self)
-        self.client.post("/add_expense/", add_expense_data(self)
-        )
+        self.client.post(reverse('add_expense'), add_expense_data(self))
         response = Expense.objects.get(description='Shopping')
         self.assertEqual(response.converted_amount, response.amount)
 

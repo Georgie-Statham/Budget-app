@@ -5,7 +5,7 @@ from django.contrib.messages import get_messages
 
 from datetime import date
 from decimal import *
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 from itertools import cycle
 
 from .forms import PaybackForm
@@ -20,7 +20,7 @@ def login(self):
     return self.client.login(username='Georgie', password='12345678')
 
 def payback_form_data(self):
-    """ Returns dummy data for Payback Form"""
+    """ Returns dummy data for PaybackForm"""
     return {
         'date': date.today(),
         'who_from': 'Georgie',
@@ -87,11 +87,12 @@ class PaybackTests(TestCase):
     def test_submitting_payback_form_generates_success_message_and_redirects_to_payment_overview(self, mock_currency_converter):
         mock_currency_converter.return_value = Decimal(1.0)
         login(self)
-        response = self.client.post("/payback/payback_form", payback_form_data(self))
+        response = self.client.post(
+            reverse('payback_form'), payback_form_data(self))
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), "Payback successfully recorded.")
-        self.assertRedirects(response, "/payback/overview")
+        self.assertRedirects(response, reverse("overview"))
 
 
 class BalancesTest(TestCase):

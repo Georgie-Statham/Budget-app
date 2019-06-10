@@ -11,9 +11,10 @@ from datetime import date, datetime
 from main.models import Expense
 
 
-# helper functions
+# Helper functions
 
 def months_so_far():
+    """ Returns a list of tuples of months and years for which there are expenses in Expense """
     month_list = []
     for expense in Expense.objects.all().order_by('-date'):
         month, year = expense.date.strftime("%b"), expense.date.strftime("%Y")
@@ -21,7 +22,7 @@ def months_so_far():
             month_list.append((month, year))
     return month_list
 
-# class based editing views
+# Class based editing views
 
 class ExpenseUpdate(SuccessMessageMixin, UpdateView):
     model = Expense
@@ -57,8 +58,7 @@ class ExpenseDelete(DeleteView):
         messages.success(self.request, self.success_message)
         return super(ExpenseDelete, self).delete(request, *args, **kwargs)
 
-
-# views
+# Views
 
 @login_required(login_url='/accounts/login/')
 def detailed_month(request, month, year):
@@ -87,9 +87,10 @@ def detailed_month(request, month, year):
             date__month=month_int,
             who_paid=person[0]
         )
-        amount_paid = 0
-        for expense in expenses_paid_for:
-            amount_paid += expense.converted_amount
+        amount_paid = sum(
+            expense.converted_amount
+            for expense in expenses_paid_for
+        )
         amount_paid_dict[person[0]] = amount_paid
 
     expenses_in_month = Expense.objects.filter(
