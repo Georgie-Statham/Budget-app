@@ -13,60 +13,25 @@ from datetime import date
 from .forms import PaybackForm
 from .models import Payback
 from main.models import Expense
-from main.views import currency_converter
+from main.views import currency_converter, calculate_balance_GBP
 
-# helper functions
-
-def calculate_balances():
-    """ Calculates the amount owed by each user in GBP, ILS, and AUD """
-    family_expenses = Expense.objects.filter(who_for='Everyone')
-    total_family_expenses = sum(
-        expense.converted_amount
-        for expense
-        in family_expenses
-    )
-    individual_share = total_family_expenses / Decimal(len(Expense.USERS))
+# Helper functions
+def calculate_balances_AUD_ILS():
     balances = {}
-    for user in Expense.USERS:
-        expenses_paid_for = Expense.objects.filter(
-            who_for='Everyone',
-            who_paid=user[0]
-        )
-        amount_paid = sum(
-            expense.converted_amount
-            for expense
-            in expenses_paid_for
-        )
-        paybacks_made = Payback.objects.filter(who_from=user[0])
-        total_paybacks_made = sum(
-            item.GBP
-            for item
-            in paybacks_made
-        )
-        paybacks_received = Payback.objects.filter(who_to=user[0])
-        total_paybacks_received = sum(
-            item.GBP
-            for item
-            in paybacks_received
-        )
-        user_balance_GBP = (
-            -individual_share
-            + amount_paid
-            + total_paybacks_made
-            - total_paybacks_received
-        )
-        user_balance_ILS = user_balance_GBP * currency_converter(
+    balance_in_GBP = calculate_balance_GBP()
+    for user, balance_GBP in balance_in_GBP.items():
+        balance_ILS = balance_GBP * currency_converter(
             'ILS', 'GBP', date.today())
-        user_balance_AUD = user_balance_GBP * currency_converter(
+        balance_AUD = balance_GBP * currency_converter(
             'AUD', 'GBP', date.today())
-        balances[user[0]] = (
-            user_balance_GBP.quantize(Decimal('.01')),
-            user_balance_ILS.quantize(Decimal('.01')),
-            user_balance_AUD.quantize(Decimal('.01'))
+        balances[user] = (
+            balance_GBP.quantize(Decimal('.01')),
+            balance_ILS.quantize(Decimal('.01')),
+            balance_AUD.quantize(Decimal('.01'))
         )
     return balances
 
-# class based editing views
+# Class based editing views
 
 class PaybackUpdate(SuccessMessageMixin, UpdateView):
     model = Payback
@@ -97,7 +62,7 @@ class PaybackDelete(DeleteView):
 @login_required(login_url='/accounts/login/')
 def overview(request):
     payback_list = Payback.objects.all().order_by('-date')
-    balances = calculate_balances()
+    balances = calculate_balances_AUD_ILS()
     context = {
         'payback_list': payback_list,
         'balances': balances
@@ -134,6 +99,6 @@ def payback_form(request):
         form = PaybackForm(initial={'who_from': request.user.username})
     context = {
        'form': form,
-       'balances': calculate_balances()
+       'balances': calculate_balances_AUD_ILS()
     }
     return render(request, 'payback_form.html', context)

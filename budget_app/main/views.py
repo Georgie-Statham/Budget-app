@@ -10,6 +10,7 @@ import json
 
 from .models import Expense
 from .forms import ExpenseForm
+from payback.models import Payback
 
 # helper functions
 
@@ -35,8 +36,48 @@ def months_so_far():
             month_list.append((month, year))
     return month_list
 
+def calculate_balance_GBP():
+    """ Calculates the amount owed by each user in GBP, ILS, and AUD """
+    family_expenses = Expense.objects.filter(who_for='Everyone')
+    total_family_expenses = sum(
+        expense.converted_amount
+        for expense
+        in family_expenses
+    )
+    individual_share = total_family_expenses / Decimal(len(Expense.USERS))
+    balance_GBP = {}
+    for user in Expense.USERS:
+        expenses_paid_for = Expense.objects.filter(
+            who_for='Everyone',
+            who_paid=user[0]
+        )
+        amount_paid = sum(
+            expense.converted_amount
+            for expense
+            in expenses_paid_for
+        )
+        paybacks_made = Payback.objects.filter(who_from=user[0])
+        total_paybacks_made = sum(
+            item.GBP
+            for item
+            in paybacks_made
+        )
+        paybacks_received = Payback.objects.filter(who_to=user[0])
+        total_paybacks_received = sum(
+            item.GBP
+            for item
+            in paybacks_received
+        )
+        user_balance_GBP = (
+            -individual_share
+            + amount_paid
+            + total_paybacks_made
+            - total_paybacks_received
+        )
+        balance_GBP[user[0]] = user_balance_GBP
+    return balance_GBP
 
-# views
+# Views
 
 @login_required(login_url='/accounts/login/')
 def home(request):
@@ -78,13 +119,14 @@ def home(request):
         for expense in individual_expenses:
             individual_spending += expense.converted_amount
         individual_expenses_dict[person[0]] = individual_spending
-
+    amount_owed = calculate_balance_GBP()[request.user.username]
     context = {
         'category_totals_dict': category_totals_dict,
         'family_total': family_total,
         'amount_paid_dict': amount_paid_dict,
         'individual_expenses_dict': individual_expenses_dict,
         'months': months,
+        'amount_owed': amount_owed
     }
     return render(request, 'home.html', context)
 
