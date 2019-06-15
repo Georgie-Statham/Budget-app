@@ -119,14 +119,17 @@ def home(request):
         for expense in individual_expenses:
             individual_spending += expense.converted_amount
         individual_expenses_dict[person[0]] = individual_spending
-    amount_owed = calculate_balance_GBP()[request.user.username]
+    amount_owed = calculate_balance_GBP()[
+            request.user.username].quantize(Decimal('.01'))
     context = {
         'category_totals_dict': category_totals_dict,
         'family_total': family_total,
         'amount_paid_dict': amount_paid_dict,
         'individual_expenses_dict': individual_expenses_dict,
         'months': months,
-        'amount_owed': amount_owed
+        'amount_owed': amount_owed,
+        'amount_owed_abs': abs(amount_owed)
+
     }
     return render(request, 'home.html', context)
 
