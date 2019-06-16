@@ -11,6 +11,7 @@ from decimal import *
 from .models import Expense
 from .forms import ExpenseForm
 from .views import currency_converter
+from payback.models import Payback
 
     # Helper functions
 
@@ -89,7 +90,6 @@ class FamilyExpensesTest(TestCase):
             who_for="Everyone",
             who_paid="Tristan"
         )
-
 
     def test_login_required_to_access_home_page(self):
         response = self.client.get(reverse('home'))
@@ -298,3 +298,80 @@ class AddExpenses(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEquals(
             form.errors['date'], ["Date can't be in the future."])
+
+class BalancesTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        """ Creates three users and three expense objects """
+        User.objects.create_user('Claire', 'claire@email.com', '12345678')
+        User.objects.create_user('Georgie', 'georgie@email.com', '12345678')
+        User.objects.create_user('Tristan', 'tristan@email.com', '12345678')
+
+        Expense.objects.create(
+            date=date.today(),
+            description="Test balance 1",
+            category="Food",
+            amount=30,
+            converted_amount=30,
+            currency="GBP",
+            who_for="Everyone",
+            who_paid="Georgie"
+        )
+        Expense.objects.create(
+            date=date.today(),
+            description="Test balance 2",
+            category="Food",
+            amount=10,
+            converted_amount=10,
+            currency="GBP",
+            who_for="Everyone",
+            who_paid="Claire"
+        )
+        Expense.objects.create(
+            date=date.today(),
+            description="Test balance 3",
+            category="Food",
+            amount=20,
+            converted_amount=20,
+            currency="GBP",
+            who_for="Everyone",
+            who_paid="Tristan"
+        )
+
+    def test_amount_owed_from_expenses(self):
+        login(self)
+        response = self.client.get(reverse('home'))
+        amount_owed = response.context['amount_owed']
+        self.assertEqual(amount_owed, Decimal(10))
+        self.assertContains(response, 'You are owed £10')
+
+    def test_amount_owed_changes_with_different_user(self):
+        self.client.login(username='Claire', password='12345678')
+        response = self.client.get(reverse('home'))
+        amount_owed = response.context['amount_owed']
+        amount_owed_abs = response.context['amount_owed_abs']
+        self.assertEqual(amount_owed, Decimal(-10))
+        self.assertEqual(amount_owed_abs, Decimal(10))
+        self.assertContains(response, 'You owe £10')
+
+    def test_amount_owed_including_paybacks(self):
+        Payback.objects.create(
+            date=date.today(),
+            amount=10,
+            who_from="Claire",
+            who_to="Georgie",
+            currency="GBP",
+            GBP=10,
+            ILS=120,
+            AUD=60,
+            method='Cash'
+        )
+        login(self)
+        response = self.client.get(reverse('home'))
+        amount_owed = response.context['amount_owed']
+        self.assertEqual(amount_owed, Decimal(0))
+        self.assertNotContains(response, 'You are owed')
+        self.assertNotContains(response, 'You owe')
+
+

@@ -129,7 +129,6 @@ def home(request):
         'months': months,
         'amount_owed': amount_owed,
         'amount_owed_abs': abs(amount_owed)
-
     }
     return render(request, 'home.html', context)
 

@@ -106,16 +106,6 @@ class BalancesTest(TestCase):
 
         Expense.objects.create(
             date=date.today(),
-            description="Test balance 2",
-            category="Food",
-            amount=10,
-            converted_amount=10,
-            currency="GBP",
-            who_for="Everyone",
-            who_paid="Claire"
-        )
-        Expense.objects.create(
-            date=date.today(),
             description="Test balance 1",
             category="Food",
             amount=20,
@@ -123,6 +113,16 @@ class BalancesTest(TestCase):
             currency="GBP",
             who_for="Everyone",
             who_paid="Georgie"
+        )
+        Expense.objects.create(
+            date=date.today(),
+            description="Test balance 2",
+            category="Food",
+            amount=10,
+            converted_amount=10,
+            currency="GBP",
+            who_for="Everyone",
+            who_paid="Claire"
         )
         Expense.objects.create(
             date=date.today(),
