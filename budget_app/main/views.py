@@ -45,6 +45,7 @@ def calculate_balance_GBP():
         in family_expenses
     )
     individual_share = total_family_expenses / Decimal(len(Expense.USERS))
+
     balance_GBP = {}
     for user in Expense.USERS:
         expenses_paid_for = Expense.objects.filter(
@@ -56,6 +57,28 @@ def calculate_balance_GBP():
             for expense
             in expenses_paid_for
         )
+
+        ind_exp_paid_by_other_user = (
+            Expense.objects.filter(who_for=user[0])
+                           .exclude(who_paid=user[0])
+        )
+        total_ind_exp_paid_by_other_user = sum(
+            item.converted_amount
+            for item
+            in ind_exp_paid_by_other_user
+        )
+
+        ind_exp_paid_for_other_user = (
+            Expense.objects.filter(who_paid=user[0])
+                           .exclude(who_for=user[0])
+                           .exclude(who_for='Everyone')
+        )
+        total_ind_exp_paid_for_other_user = sum(
+            item.converted_amount
+            for item
+            in ind_exp_paid_for_other_user
+        )
+
         paybacks_made = Payback.objects.filter(who_from=user[0])
         total_paybacks_made = sum(
             item.GBP
@@ -68,9 +91,12 @@ def calculate_balance_GBP():
             for item
             in paybacks_received
         )
+
         user_balance_GBP = (
-            -individual_share
+            - individual_share
             + amount_paid
+            - total_ind_exp_paid_by_other_user
+            + total_ind_exp_paid_for_other_user
             + total_paybacks_made
             - total_paybacks_received
         )

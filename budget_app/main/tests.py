@@ -375,3 +375,32 @@ class BalancesTest(TestCase):
         self.assertNotContains(response, 'You owe')
 
 
+class IndividualBalances(TestCase):
+
+    def setUp(self):
+        """ Create two users and expense where user1 pays for user2 """
+        User.objects.create_user('Georgie', 'georgie@email.com', '12345678')
+        User.objects.create_user('Claire', 'claire@email.com', '12345678')
+
+        Expense.objects.create(
+            date=date.today(),
+            description="Individual Balances Test",
+            category="Hobbies",
+            amount=100,
+            converted_amount=50,
+            currency="AUD",
+            who_for="Georgie",
+            who_paid="Claire"
+        )
+
+    def test_individual_expenses_paid_for_other_user_subtracted_from_amount_owed(self):
+        self.client.login(username='Claire', password='12345678')
+        response = self.client.get(reverse('home'))
+        amount_owed = response.context['amount_owed']
+        self.assertEqual(amount_owed, Decimal(50))
+
+    def test_individual_expenses_paid_for_by_other_user_added_to_amount_owed(self):
+        self.client.login(username='Georgie', password='12345678')
+        response = self.client.get(reverse('home'))
+        amount_owed = response.context['amount_owed']
+        self.assertEqual(amount_owed, Decimal(-50))

@@ -47,7 +47,7 @@ class Expense(models.Model):
     currency = models.CharField(
             max_length=3,
             choices=CURRENCIES,
-            default='ILS')
+            default='AUD')
     who_for = models.CharField(
             max_length=10,
             choices=WHO_FOR,
