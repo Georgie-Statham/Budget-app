@@ -11,7 +11,8 @@ import json
 from .models import Expense
 from .forms import ExpenseForm
 from payback.models import Payback
-from recurring_expenses import add_recurring_expenses
+from .add_recurring_expenses import *
+from .currency_converter import currency_converter
 
 # helper functions
 
@@ -114,7 +115,8 @@ def home(request):
     amount_paid_dict = {}
     individual_expenses_dict = {}
 
-    add_recurring_expenses()
+    # add recurring expenses that have been since app last opened
+    add_scheduled_expenses()
 
     for category in Expense.CATEGORIES:
         family_expenses_in_category = Expense.objects.filter(

@@ -10,7 +10,7 @@ from decimal import *
 
 from .models import Expense
 from .forms import ExpenseForm
-from .views import currency_converter
+from .currency_converter import currency_converter
 from payback.models import Payback
 
     # Helper functions

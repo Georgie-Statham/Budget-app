@@ -10,7 +10,7 @@ from itertools import cycle
 
 from .forms import PaybackForm
 from .models import Payback
-from main.views import currency_converter
+from main.currency_converter import currency_converter
 from main.models import Expense
 
 # Helper functions

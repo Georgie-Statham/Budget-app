@@ -13,7 +13,8 @@ from datetime import date
 from .forms import PaybackForm
 from .models import Payback
 from main.models import Expense
-from main.views import currency_converter, calculate_balance_GBP
+from main.views import calculate_balance_GBP
+from main.currency_converter import currency_converter
 
 # Helper functions
 def calculate_balances_AUD_ILS():

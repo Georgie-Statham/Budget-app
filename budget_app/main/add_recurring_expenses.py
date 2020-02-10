@@ -5,9 +5,9 @@ from decimal import *
 import requests
 import json
 
-from main.views import currency_converter
-from .models import Recurring
-from main.models import Expense
+from .currency_converter import currency_converter
+from recurring_expenses.models import Recurring
+from .models import Expense
 
 
 def reschedule(expense, relativedelta):

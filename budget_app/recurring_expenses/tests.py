@@ -10,7 +10,7 @@ from decimal import *
 from .forms import RecurringForm
 from .models import Recurring
 from main.models import Expense
-from .add_recurring_expenses import add_scheduled_expenses, add_recurring_expense
+from main.add_recurring_expenses import *
 
 # Helper functions
 
@@ -229,7 +229,7 @@ class AddRecurringExpensesFromToday(TestCase):
         self.assertEqual(response.description, bill.description)
 
 class AddRecurringExpensesInILS(TestCase):
-    @patch('recurring_expenses.add_recurring_expenses.currency_converter')
+    @patch('main.add_recurring_expenses.currency_converter')
     def test_if_currency_is_not_GBP_converted_amount_is_calculated_correctly(self, mock_currency_converter):
         mock_currency_converter.return_value = Decimal(0.25)
         bill = Recurring.objects.create(
