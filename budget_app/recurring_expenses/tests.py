@@ -143,6 +143,14 @@ class ScheduledExpenses(TestCase):
         self.assertEqual(str(messages[0]), "Recurring expense successfully deleted.")
         self.assertRedirects(response, reverse("scheduled"))
 
+    def test_deleted_recurring_expense_not_found_in_scheduled_expenses(self):
+        recurring_expense = get_recurring_expense(self, "Test bill")
+        login(self)
+        self.client.post(
+            reverse('recurring_delete', kwargs={'pk': recurring_expense.pk}))
+        response = self.client.get(reverse('scheduled'))
+        self.assertEqual(len(response.context['scheduled_expenses']), 0)
+
 
 class AddRecurringExpensesInPast(TestCase):
     @classmethod
@@ -256,6 +264,4 @@ class AddRecurringExpensesInFuture(TestCase):
         response = Expense.objects.all()
         self.assertEqual(len(response), 0)
 
-    def test_add_recurring_expenses_runs_on_start_up(self):
-        pass
 

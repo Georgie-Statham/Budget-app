@@ -11,6 +11,7 @@ import json
 from .models import Expense
 from .forms import ExpenseForm
 from payback.models import Payback
+from recurring_expenses import add_recurring_expenses
 
 # helper functions
 
@@ -112,6 +113,8 @@ def home(request):
     family_total = 0
     amount_paid_dict = {}
     individual_expenses_dict = {}
+
+    add_recurring_expenses()
 
     for category in Expense.CATEGORIES:
         family_expenses_in_category = Expense.objects.filter(
