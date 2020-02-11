@@ -73,7 +73,8 @@ def detailed_month(request, month, year):
         family_expenses_in_category = Expense.objects.filter(
             category=category[0],
             who_for='Everyone',
-            date__month=month_int
+            date__month=month_int,
+            date__year=year,
         )
         category_total = 0
         for expense in family_expenses_in_category:
@@ -85,6 +86,7 @@ def detailed_month(request, month, year):
         expenses_paid_for = Expense.objects.filter(
             who_for='Everyone',
             date__month=month_int,
+            date__year=year,
             who_paid=person[0]
         )
         amount_paid = sum(
@@ -104,7 +106,8 @@ def detailed_month(request, month, year):
             user_expenses_in_category = Expense.objects.filter(
             category=category[0],
             who_for=user[0],
-            date__month=month_int
+            date__month=month_int,
+            date__year=year
         )
             user_category_total = 0
             for expense in user_expenses_in_category:
