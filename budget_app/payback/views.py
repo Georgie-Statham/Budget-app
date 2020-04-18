@@ -17,17 +17,14 @@ from main.views import calculate_balance_GBP
 from main.currency_converter import currency_converter
 
 # Helper functions
-def calculate_balances_AUD_ILS():
+def calculate_balances_AUD():
     balances = {}
     balance_in_GBP = calculate_balance_GBP()
     for user, balance_GBP in balance_in_GBP.items():
-        balance_ILS = balance_GBP * currency_converter(
-            'ILS', 'GBP', date.today())
         balance_AUD = balance_GBP * currency_converter(
             'AUD', 'GBP', date.today())
         balances[user] = (
             balance_GBP.quantize(Decimal('.01')),
-            balance_ILS.quantize(Decimal('.01')),
             balance_AUD.quantize(Decimal('.01'))
         )
     return balances
@@ -63,7 +60,7 @@ class PaybackDelete(DeleteView):
 @login_required(login_url='/accounts/login/')
 def overview(request):
     payback_list = Payback.objects.all().order_by('-date')
-    balances = calculate_balances_AUD_ILS()
+    balances = calculate_balances_AUD()
     context = {
         'payback_list': payback_list,
         'balances': balances
@@ -78,10 +75,6 @@ def payback_form(request):
             data = form.save(commit=False)
             date = form.cleaned_data['date']
             amount = form.cleaned_data['amount']
-            if form.cleaned_data['currency'] == 'ILS':
-                data.ILS = amount
-                data.GBP = amount * currency_converter('GBP', 'ILS', date)
-                data.AUD = amount * currency_converter('AUD', 'ILS', date)
             if form.cleaned_data['currency'] == 'GBP':
                 data.GBP = amount
                 data.ILS = amount * currency_converter('ILS', 'GBP', date)
@@ -100,6 +93,6 @@ def payback_form(request):
         form = PaybackForm(initial={'who_from': request.user.username})
     context = {
        'form': form,
-       'balances': calculate_balances_AUD_ILS()
+       'balances': calculate_balances_AUD()
     }
     return render(request, 'payback_form.html', context)

@@ -11,7 +11,7 @@ class Payback(models.Model):
         (user.username, user.username)
         for user in User.objects.all()
     ]
-    CURRENCIES = (('ILS', 'ILS'), ('GBP', 'GBP'), ('AUD', 'AUD'))
+    CURRENCIES = (('GBP', 'GBP'), ('AUD', 'AUD'))
     METHODS = (('Bank_transfer', 'Bank Transfer'), ('Cash', 'Cash'))
 
     date = models.DateField(default=date.today, validators=[no_future])
@@ -29,7 +29,6 @@ class Payback(models.Model):
             choices=CURRENCIES,
             default='GBP')
     GBP = models.DecimalField(max_digits=7, decimal_places=2)
-    ILS = models.DecimalField(max_digits=7, decimal_places=2)
     AUD = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     method = models.CharField(
             max_length=20,

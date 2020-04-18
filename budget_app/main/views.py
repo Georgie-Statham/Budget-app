@@ -38,6 +38,8 @@ def months_so_far():
             month_list.append((month, year))
     return month_list
 
+"CHANGE SO MAIN CURRENCY IS AUD"
+
 def calculate_balance_GBP():
     """ Calculates the amount owed by each user in GBP, ILS, and AUD """
     family_expenses = Expense.objects.filter(who_for='Everyone')

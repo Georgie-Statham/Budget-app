@@ -15,6 +15,8 @@ def reschedule(expense, relativedelta):
     expense.next_date = expense.next_date + relativedelta
     expense.save()
 
+"CONVERT SO DEFUALT CURRENCY IS AUD"
+
 def add_recurring_expense(expense):
     """Adds a single scheduled expense and schedules next date"""
     if expense.currency == 'GBP':

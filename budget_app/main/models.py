@@ -12,7 +12,7 @@ def no_future(value):
 class Expense(models.Model):
     CATEGORIES = (
         ('Food', 'Food'),
-        ('Baby', 'Baby'),
+        ('Robin', 'Robin'),
         ('Fun_with_friends', 'Fun with friends'),
         ('Fun_with_each_other', 'Fun with each other'),
         ('Health', 'Pharmacy/Health'),
@@ -23,10 +23,11 @@ class Expense(models.Model):
         ('Household', 'Household'),
         ('Cat', 'Cat'),
         ('Transport', 'Transport'),
-        ('Travel', 'Travel'),
+        ('Holidays', 'Holidays'),
+        ('Gifts', 'Gifts and donations'),
         ('Misc', 'Miscellaneous')
     )
-    CURRENCIES = (('ILS', 'ILS'), ('GBP', 'GBP'), ('AUD', 'AUD'))
+    CURRENCIES = (('GBP', 'GBP'), ('AUD', 'AUD'))
 
     USERS = [
         (user.username, user.username)
