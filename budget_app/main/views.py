@@ -40,24 +40,24 @@ def months_so_far():
 
 "CHANGE SO MAIN CURRENCY IS AUD"
 
-def calculate_balance_GBP():
-    """ Calculates the amount owed by each user in GBP, ILS, and AUD """
+def calculate_balance_AUD():
+    """ Calculates the amount owed by each user in AUD and GBP"""
     family_expenses = Expense.objects.filter(who_for='Everyone')
     total_family_expenses = sum(
-        expense.converted_amount
+        expense.AUD
         for expense
         in family_expenses
     )
     individual_share = total_family_expenses / Decimal(len(Expense.USERS))
 
-    balance_GBP = {}
+    balance_AUD = {}
     for user in Expense.USERS:
         expenses_paid_for = Expense.objects.filter(
             who_for='Everyone',
             who_paid=user[0]
         )
         amount_paid = sum(
-            expense.converted_amount
+            expense.AUD
             for expense
             in expenses_paid_for
         )
@@ -67,7 +67,7 @@ def calculate_balance_GBP():
                            .exclude(who_paid=user[0])
         )
         total_ind_exp_paid_by_other_user = sum(
-            item.converted_amount
+            item.AUD
             for item
             in ind_exp_paid_by_other_user
         )
@@ -78,25 +78,25 @@ def calculate_balance_GBP():
                            .exclude(who_for='Everyone')
         )
         total_ind_exp_paid_for_other_user = sum(
-            item.converted_amount
+            item.AUD
             for item
             in ind_exp_paid_for_other_user
         )
 
         paybacks_made = Payback.objects.filter(who_from=user[0])
         total_paybacks_made = sum(
-            item.GBP
+            item.AUD
             for item
             in paybacks_made
         )
         paybacks_received = Payback.objects.filter(who_to=user[0])
         total_paybacks_received = sum(
-            item.GBP
+            item.AUD
             for item
             in paybacks_received
         )
 
-        user_balance_GBP = (
+        user_balance_AUD = (
             - individual_share
             + amount_paid
             - total_ind_exp_paid_by_other_user
@@ -104,8 +104,8 @@ def calculate_balance_GBP():
             + total_paybacks_made
             - total_paybacks_received
         )
-        balance_GBP[user[0]] = user_balance_GBP
-    return balance_GBP
+        balance_AUD[user[0]] = user_balance_AUD
+    return balance_AUD
 
 # Views
 
@@ -128,8 +128,8 @@ def home(request):
         )
         category_total = 0
         for expense in family_expenses_in_category:
-            category_total += expense.converted_amount
-            family_total += expense.converted_amount
+            category_total += expense.AUD
+            family_total += expense.AUD
             category_totals_dict[category[1]] = category_total
 
     for person in Expense.USERS:
@@ -140,7 +140,7 @@ def home(request):
         )
         amount_paid = 0
         for expense in expenses_paid_for:
-            amount_paid += expense.converted_amount
+            amount_paid += expense.AUD
         amount_paid_dict[person[0]] = amount_paid
 
     for person in Expense.USERS:
@@ -150,9 +150,9 @@ def home(request):
         )
         individual_spending = 0
         for expense in individual_expenses:
-            individual_spending += expense.converted_amount
+            individual_spending += expense.AUD
         individual_expenses_dict[person[0]] = individual_spending
-    amount_owed = calculate_balance_GBP()[
+    amount_owed = calculate_balance_AUD()[
             request.user.username].quantize(Decimal('.01'))
     context = {
         'category_totals_dict': category_totals_dict,
@@ -171,12 +171,14 @@ def add_expense(request):
         form = ExpenseForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.save(commit=False)
-            if form.cleaned_data['currency'] != 'GBP':
-                date = form.cleaned_data['date']
-                currency = form.cleaned_data['currency']
-                data.converted_amount = form.cleaned_data['amount'] * currency_converter('GBP', currency, date)
-            else:
-                data.converted_amount = form.cleaned_data['amount']
+            date = form.cleaned_data['date']
+            amount = form.cleaned_data['amount']
+            if form.cleaned_data['currency'] == 'GBP':
+                data.GBP = amount
+                data.AUD = amount * currency_converter('AUD', 'GBP', date)
+            if form.cleaned_data['currency'] == 'AUD':
+                data.AUD = amount
+                data.GBP = amount * currency_converter('GBP', 'AUD', date)
             data.save()
             messages.add_message(
                 request, messages.SUCCESS, 'Expense successfully added.')

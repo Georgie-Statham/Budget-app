@@ -44,11 +44,12 @@ class Expense(models.Model):
             choices=CATEGORIES,
             default='Food')
     amount = models.DecimalField(max_digits=7, decimal_places=2)
-    converted_amount = models.DecimalField(max_digits=7, decimal_places=2)
     currency = models.CharField(
             max_length=3,
             choices=CURRENCIES,
             default='AUD')
+    GBP = models.DecimalField(max_digits=7, decimal_places=2)
+    AUD = models.DecimalField(max_digits=7, decimal_places=2)
     who_for = models.CharField(
             max_length=10,
             choices=WHO_FOR,

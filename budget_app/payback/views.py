@@ -13,19 +13,19 @@ from datetime import date
 from .forms import PaybackForm
 from .models import Payback
 from main.models import Expense
-from main.views import calculate_balance_GBP
+from main.views import calculate_balance_AUD
 from main.currency_converter import currency_converter
 
 # Helper functions
 def calculate_balances_AUD():
     balances = {}
-    balance_in_GBP = calculate_balance_GBP()
-    for user, balance_GBP in balance_in_GBP.items():
-        balance_AUD = balance_GBP * currency_converter(
-            'AUD', 'GBP', date.today())
+    balance_in_AUD = calculate_balance_AUD()
+    for user, balance_AUD in balance_in_AUD.items():
+        balance_GBP = balance_AUD * currency_converter(
+            'GBP', 'AUD', date.today())
         balances[user] = (
-            balance_GBP.quantize(Decimal('.01')),
-            balance_AUD.quantize(Decimal('.01'))
+            balance_AUD.quantize(Decimal('.01')),
+            balance_GBP.quantize(Decimal('.01'))
         )
     return balances
 
@@ -77,12 +77,10 @@ def payback_form(request):
             amount = form.cleaned_data['amount']
             if form.cleaned_data['currency'] == 'GBP':
                 data.GBP = amount
-                data.ILS = amount * currency_converter('ILS', 'GBP', date)
                 data.AUD = amount * currency_converter('AUD', 'GBP', date)
             if form.cleaned_data['currency'] == 'AUD':
                 data.AUD = amount
                 data.GBP = amount * currency_converter('GBP', 'AUD', date)
-                data.ILS = amount * currency_converter('ILS', 'AUD', date)
             data.save()
             messages.add_message(
                 request, messages.SUCCESS, 'Payback successfully recorded.')

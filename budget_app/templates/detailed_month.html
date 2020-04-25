@@ -29,12 +29,12 @@
         {% for category, total in category_totals_dict.items %}
         <tr>
           <td>{{ category }}</td>
-          <td class="text-right">£{{ total }}</td>
+          <td class="text-right">${{ total }}</td>
         </tr>
         {% endfor %}
         <tr>
           <td><strong>Total</strong></td>
-          <td class="text-right"><strong>£{{ family_total }}</strong></td>
+          <td class="text-right"><strong>${{ family_total }}</strong></td>
         </tr>
       </table>
     </div>
@@ -44,7 +44,7 @@
         {% for person, amount in amount_paid_dict.items %}
         <tr>
           <td>{{ person }}</td>
-          <td class="text-right">£{{ amount }}</td>
+          <td class="text-right">${{ amount }}</td>
         </tr>
         {% endfor %}
       </table>
@@ -89,13 +89,13 @@
         {% if category != 'total' %}
         <tr>
           <td>{{ category }}</td>
-          <td class="text-right">£{{ total }}</td>
+          <td class="text-right">${{ total }}</td>
         </tr>
         {% endif %}
         {% endfor %}
         <tr>
           <td><strong>Total</strong></td>
-          <td class="text-right"><strong>£ {{ dict.total }}</strong></td>
+          <td class="text-right"><strong>$ {{ dict.total }}</strong></td>
         </tr>
       </table>
     </div>
