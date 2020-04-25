@@ -15,22 +15,24 @@ def reschedule(expense, relativedelta):
     expense.next_date = expense.next_date + relativedelta
     expense.save()
 
-"CONVERT SO DEFUALT CURRENCY IS AUD"
-
 def add_recurring_expense(expense):
     """Adds a single scheduled expense and schedules next date"""
+    if expense.currency == 'AUD':
+        AUD = expense.amount
+        GBP = expense.amount * currency_converter(
+                        'GBP', 'AUD', expense.next_date)
     if expense.currency == 'GBP':
-        converted_amount = expense.amount
-    else:
-        converted_amount = expense.amount * currency_converter(
-            'GBP', expense.currency, expense.next_date)
+        GBP = expense.amount
+        AUD = expense.amount * currency_converter(
+                        'AUD', 'GBP', expense.next_date)
     Expense.objects.create(
         date=expense.next_date,
         description=expense.description,
         category=expense.category,
         amount=expense.amount,
-        converted_amount=converted_amount,
         currency=expense.currency,
+        AUD=AUD,
+        GBP=GBP,
         who_for=expense.who_for,
         who_paid=expense.who_paid
     )

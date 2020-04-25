@@ -27,7 +27,7 @@ class Payback(models.Model):
     currency = models.CharField(
             max_length=3,
             choices=CURRENCIES,
-            default='GBP')
+            default='AUD')
     GBP = models.DecimalField(max_digits=7, decimal_places=2)
     AUD = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     method = models.CharField(
