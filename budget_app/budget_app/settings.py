@@ -25,12 +25,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("FINANCE_APP_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '0.0.0.0',
     'localhost',
-    'three-musketeers-finance-app.herokuapp.com'
+    'infinite-badlands-04276.herokuapp.com'
     ]
 
 
@@ -98,7 +98,7 @@ DATABASES = {
     }
 }
 
-db_from_env = dj_database_url.config()
+db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
 
 # Password validation
